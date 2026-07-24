@@ -1,0 +1,796 @@
+/* ============================================================
+   ABC HOLIDAYS — data layer (persisted via window.storage, shared)
+   ============================================================ */
+const DEFAULT_HOTELS = [
+  {id:'h1', name:'Azure Reef Resort', location:'Maldives', price:189, rating:4.9, tag:'Beachfront', desc:'Overwater villas with private lagoon access and sunset dining.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY2QTAwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzJDNkU5RSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+d77iPPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDFiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzJDNkU5RSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGRjZBMDAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDFiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+Pne+4jzwvdGV4dD4KPC9zdmc+']},
+  {id:'h2', name:'Riad Zahra', location:'Marrakech, Morocco', price:74, rating:4.7, tag:'Boutique', desc:'A restored 19th-century riad tucked inside the medina walls.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQzc0NDBEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoMikiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn5WMPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDJiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNDNzQ0MEQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDJiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+VjDwvdGV4dD4KPC9zdmc+']},
+  {id:'h3', name:'Serin Alpine Lodge', location:'Skardu, Pakistan', price:58, rating:4.8, tag:'Mountain view', desc:'Wood-fired lodge facing the Karakoram range, breakfast included.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI1QzY4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzhGQjhDNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoMykiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+U77iPPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDNiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzhGQjhDNyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxQjVDNjgiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDNiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+PlO+4jzwvdGV4dD4KPC9zdmc+']},
+  {id:'h4', name:'Casa Bella Bay', location:'Amalfi Coast, Italy', price:145, rating:4.9, tag:'Sea view', desc:'Cliffside terraces overlooking the bay, five minutes from the marina.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMkM2RTlFIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGOUE1NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoNCkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7im7U8L3RleHQ+Cjwvc3ZnPg==','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDRiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGOUE1NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyQzZFOUUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDRiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+4pu1PC90ZXh0Pgo8L3N2Zz4=']},
+  {id:'h5', name:'Sakura Garden Inn', location:'Kyoto, Japan', price:96, rating:4.8, tag:'Traditional', desc:'A ryokan stay with private onsen and seasonal kaiseki dinners.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZCNEEyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0IyM0E2QiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoNSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4y4PC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDViIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0IyM0E2QiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGRkI0QTIiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDViKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+MuDwvdGV4dD4KPC9zdmc+']},
+  {id:'h6', name:'Palm Dune Resort', location:'Dubai, UAE', price:210, rating:4.6, tag:'Luxury', desc:'Desert-facing pools with a private beach club and spa.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDYiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY2QTAwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzdBNEIxRSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoNikiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+c77iPPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDZiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdBNEIxRSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGRjZBMDAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnaDZiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+PnO+4jzwvdGV4dD4KPC9zdmc+']}
+];
+const DEFAULT_PACKAGES = [
+  {id:'p1', name:'Bali Escape — 6 Days', location:'Bali, Indonesia', price:699, rating:4.9, tag:'Flights + hotel', desc:'Ubud jungle villa, Uluwatu sunset, and a private snorkel day.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMkU4QjlBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGOUE1NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdwMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4y0PC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDFiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGOUE1NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyRThCOUEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JncDFiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+MtDwvdGV4dD4KPC9zdmc+']},
+  {id:'p2', name:'Istanbul Heritage — 5 Days', location:'Istanbul, Turkey', price:549, rating:4.8, tag:'Guided tours', desc:'Hagia Sophia, Bosphorus cruise and a Turkish bath evening.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQzc0NDBEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzRGQTNEMSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdwMikiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+Z77iPPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDJiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzRGQTNEMSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNDNzQ0MEQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JncDJiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+Pme+4jzwvdGV4dD4KPC9zdmc+']},
+  {id:'p3', name:'Swiss Alps Retreat — 7 Days', location:'Interlaken, Switzerland', price:1290, rating:5.0, tag:'All-inclusive', desc:'Jungfrau rail journey, lakeside chalet and fondue night.', images:['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMkM2RTlFIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0VBRjRGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdwMykiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+U77iPPC90ZXh0Pgo8L3N2Zz4=','data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJncDNiIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0VBRjRGRiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyQzZFOUUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JncDNiKSIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjEwMCIgcj0iODAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNCkiLz4KICA8Y2lyY2xlIGN4PSI1MDAiIGN5PSIzMjAiIHI9IjEyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMyMCBRMTUwLDI4MCAzMDAsMzIwIFQ2MDAsMzEwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjIyKSIvPgogIDxwYXRoIGQ9Ik0wLDM1NSBRMTUwLDMzMCAzMDAsMzU1IFQ2MDAsMzQ1IFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE0KSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+PlO+4jzwvdGV4dD4KPC9zdmc+']}
+];
+const DEFAULT_DESTINATIONS = [
+  {id:'d1', name:'Santorini, Greece', tag:'Whitewashed cliffs', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0VBRjRGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+W77iPPC90ZXh0Pgo8L3N2Zz4='},
+  {id:'d2', name:'Kyoto, Japan', tag:'Temples & gardens', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZCNEEyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzdBMkU0RCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkMikiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7im6nvuI88L3RleHQ+Cjwvc3ZnPg=='},
+  {id:'d3', name:'Cape Town, S. Africa', tag:'Coastline & vineyards', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI1QzY4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGOUE1NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkMykiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4yKPC90ZXh0Pgo8L3N2Zz4='},
+  {id:'d4', name:'Hunza Valley', tag:'Peaks & orchards', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUI1QzY4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkNCkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7im7DvuI88L3RleHQ+Cjwvc3ZnPg=='},
+  {id:'d5', name:'Paris, France', tag:'Timeless city breaks', img:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQzc0NDBEIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzVCM0EyOSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkNSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn5e8PC90ZXh0Pgo8L3N2Zz4='}
+];
+const DEFAULT_SETTINGS = {
+  siteName: 'ABC Holidays',
+  logo: 'logo.png',
+  phone1: '(021) 33261177',
+  phone2: '0334 3235008',
+  email: 'info@ABCholidays.pk',
+  address: '106, 1st Floor, Iconic Trade Centre, Bahadurabad, Karachi, Pakistan',
+  facebook: 'https://www.facebook.com/M.I.AHOLIDAYS/'
+};
+const DEFAULT_CONTENT = {
+  heroBadge: 'Rated 4.9 by 12,000+ travellers',
+  heroHeadline: 'Holidays that feel<br><em>hand-picked</em>, not off the shelf.',
+  heroLead: 'ABC Holidays curates hotels, escapes and full itineraries across the globe — real people planning real trips, from a weekend in Skardu to a honeymoon in Santorini.',
+  heroImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaGVybyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxRTczQkUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMEY0QzgxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZ2hlcm8pIi8+CiAgPGNpcmNsZSBjeD0iNDgwIiBjeT0iOTAiIHI9IjcwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTYpIi8+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSIzMzAiIHI9IjExMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMwMCBRMTUwLDI2MCAzMDAsMzAwIFQ2MDAsMjkwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE4KSIvPgogIDxwYXRoIGQ9Ik0wLDM0MCBRMTUwLDMxMCAzMDAsMzQwIFQ2MDAsMzMwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjE1IiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pgo8L3N2Zz4K',
+  flyBadge: 'Next departure: Fri, 9:40 AM',
+  heroWeather: '☀️ 28°C',
+  heroLocation: 'Maldives, Water Villa',
+  heroDesc: 'Clear skies this week — perfect for the overwater suite.',
+  heroPrice: 'From ₨189/night',
+  hotelsEyebrow: 'Stays we vouch for',
+  hotelsHeading: 'Hotels our travellers keep going back to',
+  hotelsSubtext: 'Hand-inspected properties across every budget — boutique riads, beach resorts and city stays with the details that matter.',
+  packagesEyebrow: 'Complete itineraries',
+  packagesHeading: 'Holiday packages, planned end to end',
+  packagesSubtext: 'Flights, stays and experiences bundled into one price — built by our travel designers, editable by you in a click.',
+  destEyebrow: 'Where next',
+  destHeading: 'Trending destinations this season',
+  momentsEyebrow: 'Every kind of getaway',
+  momentsHeading: 'Whatever "holiday" means to you',
+  momentsSubtext: "From slopes to shorelines — however you like to travel, we've got a trip for it.",
+  moment1: 'Ski escapes',
+  moment2: 'Hot air ballooning',
+  moment3: 'Mountain treks',
+  moment4: 'Beach walks',
+  whyEyebrow: 'The ABC difference',
+  whyHeading: "Planning a trip shouldn't feel like a job",
+  feat1Title: 'Best price promise',
+  feat1Desc: "Found it cheaper elsewhere? We'll match it, no questions asked.",
+  feat2Title: '24/7 real support',
+  feat2Desc: 'A human travel expert, not a bot, whenever your plans change.',
+  feat3Title: 'Free cancellation',
+  feat3Desc: 'Flexible dates on most stays, up to 48 hours before check-in.',
+  feat4Title: 'Curated itineraries',
+  feat4Desc: 'Every package is built and tested by our own travel designers.',
+  testiEyebrow: 'Traveller stories',
+  testiHeading: "What it's like to book with ABC",
+  ctaHeading: 'Ready to plan your next trip?',
+  ctaSubtext: "Our travel team is one call or email away — reach out and we'll take it from there."
+};
+const DEFAULT_TESTIMONIALS = [
+  {id:'t1', name:'Ayesha K.', location:'Maldives, June 2026', quote:'Booked our honeymoon in Maldives through ABC — every detail was handled, right down to the sunset dinner reservation.', rating:5},
+  {id:'t2', name:'Hamza R.', location:'Skardu, May 2026', quote:'The Skardu package saved me hours of planning. Hotels were exactly as described and support answered in minutes.', rating:5},
+  {id:'t3', name:'Sana M.', location:'Istanbul, April 2026', quote:'Changed our dates twice and it was handled without any fuss. This is now our go-to for every family trip.', rating:4.5}
+];
+const BOOKING_WHATSAPP_NUMBER = '923332311922'; // 03332311922 in international format, no leading 0/+
+
+/* Static list of popular countries & cities for the booking destination search,
+   merged at runtime with whatever hotels/packages/destinations the admin has added. */
+const STATIC_DESTINATIONS = [
+  {name:'Pakistan', type:'country'}, {name:'Karachi', type:'city'}, {name:'Lahore', type:'city'},
+  {name:'Islamabad', type:'city'}, {name:'Skardu', type:'city'}, {name:'Hunza', type:'city'}, {name:'Murree', type:'city'},
+  {name:'UAE', type:'country'}, {name:'Dubai', type:'city'}, {name:'Abu Dhabi', type:'city'},
+  {name:'Turkey', type:'country'}, {name:'Istanbul', type:'city'},
+  {name:'Maldives', type:'country'}, {name:'Male', type:'city'},
+  {name:'Thailand', type:'country'}, {name:'Bangkok', type:'city'}, {name:'Phuket', type:'city'},
+  {name:'Malaysia', type:'country'}, {name:'Kuala Lumpur', type:'city'},
+  {name:'Indonesia', type:'country'}, {name:'Bali', type:'city'},
+  {name:'Saudi Arabia', type:'country'}, {name:'Jeddah', type:'city'}, {name:'Makkah', type:'city'}, {name:'Madinah', type:'city'},
+  {name:'United Kingdom', type:'country'}, {name:'London', type:'city'},
+  {name:'France', type:'country'}, {name:'Paris', type:'city'},
+  {name:'Italy', type:'country'}, {name:'Rome', type:'city'}, {name:'Amalfi Coast', type:'city'},
+  {name:'Switzerland', type:'country'}, {name:'Interlaken', type:'city'}, {name:'Zurich', type:'city'},
+  {name:'Japan', type:'country'}, {name:'Tokyo', type:'city'}, {name:'Kyoto', type:'city'},
+  {name:'Singapore', type:'country'},
+  {name:'Sri Lanka', type:'country'}, {name:'Colombo', type:'city'},
+  {name:'Egypt', type:'country'}, {name:'Cairo', type:'city'},
+  {name:'Morocco', type:'country'}, {name:'Marrakech', type:'city'},
+  {name:'Spain', type:'country'}, {name:'Barcelona', type:'city'},
+  {name:'Greece', type:'country'}, {name:'Santorini', type:'city'}, {name:'Athens', type:'city'},
+  {name:'Azerbaijan', type:'country'}, {name:'Baku', type:'city'},
+  {name:'Georgia', type:'country'}, {name:'Tbilisi', type:'city'},
+  {name:'Qatar', type:'country'}, {name:'Doha', type:'city'},
+  {name:'South Africa', type:'country'}, {name:'Cape Town', type:'city'},
+  {name:'USA', type:'country'}, {name:'New York', type:'city'},
+  {name:'Australia', type:'country'}, {name:'Sydney', type:'city'}
+];
+
+const CURRENCY = '₨'; // change this one symbol to switch currency site-wide
+const ADMIN_USER = 'administration';
+const ADMIN_PASS = 'abc1234';
+
+/* Storage abstraction: uses Claude's window.storage when available (in-chat preview),
+   falls back to the browser's own localStorage everywhere else (real hosting, local file, etc.)
+   so admin edits and bookings always actually save. */
+const hasCloudStorage = (typeof window !== 'undefined') && !!window.storage;
+async function storageGet(key){
+  if(hasCloudStorage){
+    try{ return await window.storage.get(key, true); }catch(e){ /* fall through to local */ }
+  }
+  try{
+    const v = localStorage.getItem(key);
+    return v !== null ? { value: v } : null;
+  }catch(e){ return null; }
+}
+async function storageSet(key, value){
+  if(hasCloudStorage){
+    try{ await window.storage.set(key, value, true); return true; }catch(e){ /* fall through to local */ }
+  }
+  try{ localStorage.setItem(key, value); return true; }catch(e){ return false; }
+}
+
+let state = { hotels:[], packages:[], destinations:[], testimonials:[], settings:{}, content:{}, isAdmin:false };
+let currentEdit = { type:null, id:null };
+let currentDestEditId = null;
+let currentTestiEditId = null;
+let pendingLogoDataUrl = null;
+let pendingHeroImageDataUrl = null;
+
+async function loadData(){
+  // Bump this whenever DEFAULT_HOTELS/PACKAGES/DESTINATIONS/TESTIMONIALS change, so anyone who already
+  // saved the old sample data (e.g. with broken image links) gets refreshed automatically.
+  const DATA_VERSION = '5';
+  const v = await storageGet('site:dataVersion');
+  if(!v || v.value !== DATA_VERSION){
+    await storageSet('site:hotels', JSON.stringify(DEFAULT_HOTELS));
+    await storageSet('site:packages', JSON.stringify(DEFAULT_PACKAGES));
+    await storageSet('site:destinations', JSON.stringify(DEFAULT_DESTINATIONS));
+    await storageSet('site:testimonials', JSON.stringify(DEFAULT_TESTIMONIALS));
+    await storageSet('site:dataVersion', DATA_VERSION);
+  }
+  state.hotels = await getOrSeed('site:hotels', DEFAULT_HOTELS);
+  state.packages = await getOrSeed('site:packages', DEFAULT_PACKAGES);
+  state.destinations = await getOrSeed('site:destinations', DEFAULT_DESTINATIONS);
+  state.testimonials = await getOrSeed('site:testimonials', DEFAULT_TESTIMONIALS);
+  // Merge with defaults so newly-added settings fields (e.g. hero text) always have a value
+  // even for admins who saved settings before those fields existed.
+  const savedSettings = await getOrSeed('site:settings', DEFAULT_SETTINGS);
+  state.settings = { ...DEFAULT_SETTINGS, ...savedSettings };
+  const savedContent = await getOrSeed('site:content', DEFAULT_CONTENT);
+  state.content = { ...DEFAULT_CONTENT, ...savedContent };
+  renderHotels(); renderPackages(); renderDestinations(); renderTestimonials();
+  applySettings(); applyContent();
+}
+async function getOrSeed(key, fallback){
+  try{
+    const res = await storageGet(key);
+    if(res && res.value) return JSON.parse(res.value);
+    await storageSet(key, JSON.stringify(fallback));
+    return fallback;
+  }catch(e){
+    try{ await storageSet(key, JSON.stringify(fallback)); }catch(e2){}
+    return fallback;
+  }
+}
+async function saveCollection(key, data){
+  try{ await storageSet(key, JSON.stringify(data)); }catch(e){ console.error('Save failed', e); }
+}
+
+/* ============ RENDER ============ */
+function getImages(item){
+  if(item.images && item.images.length) return item.images;
+  if(item.img) return [item.img];
+  return ['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY2QTAwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzJDNkU5RSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+d77iPPC90ZXh0Pgo8L3N2Zz4='];
+}
+function passCardHTML(item, type){
+  const stars = item.rating.toFixed(1);
+  const images = getImages(item);
+  const multi = images.length > 1;
+  const slidesHTML = images.map((src,i)=>
+    `<img src="${src}" alt="${item.name}" class="gallery-slide ${i===0?'active':''}" data-index="${i}" onerror="this.style.display='none'">`
+  ).join('');
+  const dotsHTML = multi ? `<div class="gallery-dots">${images.map((_,i)=>
+    `<span class="gallery-dot ${i===0?'active':''}" data-index="${i}"></span>`).join('')}</div>` : '';
+  const arrowsHTML = multi ? `
+    <button class="gallery-arrow gallery-prev" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="gallery-arrow gallery-next" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>` : '';
+  const countHTML = multi ? `<span class="gallery-count"><i class="fa-solid fa-images"></i> ${images.length}</span>` : '';
+  return `
+  <div class="pass-card reveal" data-id="${item.id}" data-type="${type}">
+    <div class="pass-media" data-slide-index="0" data-slide-count="${images.length}">
+      ${slidesHTML}
+      ${arrowsHTML}
+      ${dotsHTML}
+      ${countHTML}
+      <span class="pass-tag">${item.tag || (type==='package'?'Package':'Hotel')}</span>
+      <span class="pass-rating"><i class="fa-solid fa-star"></i> ${stars}</span>
+    </div>
+    <div class="pass-body">
+      <div class="pass-loc"><i class="fa-solid fa-location-dot"></i> ${item.location}</div>
+      <h3>${item.name}</h3>
+      <p class="desc">${item.desc}</p>
+    </div>
+    <div class="pass-perf"></div>
+    <div class="pass-foot">
+      <div class="pass-price"><span class="amount">${CURRENCY}${item.price}</span> <span class="per">${type==='package'?'/ person':'/ night'}</span></div>
+      <button class="pass-book" onclick="openBooking('${type}','${item.id}')"><i class="fa-solid fa-calendar-check"></i> Book now</button>
+    </div>
+    <div class="admin-edit-bar">
+      <button class="ae-edit" onclick="openEdit('${type}','${item.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+      <button class="ae-delete" onclick="deleteItem('${type}','${item.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+    </div>
+  </div>`;
+}
+function goToSlide(mediaEl, index){
+  const slides = mediaEl.querySelectorAll('.gallery-slide');
+  const dots = mediaEl.querySelectorAll('.gallery-dot');
+  const count = slides.length;
+  const target = (index + count) % count;
+  slides.forEach((s,i)=>s.classList.toggle('active', i===target));
+  dots.forEach((d,i)=>d.classList.toggle('active', i===target));
+  mediaEl.dataset.slideIndex = target;
+}
+/* Event delegation for gallery arrows/dots — works for both hotels and packages grids */
+['hotelsGrid','packagesGrid'].forEach(gridId=>{
+  document.addEventListener('click', e=>{
+    const grid = document.getElementById(gridId);
+    if(!grid || !grid.contains(e.target)) return;
+    const media = e.target.closest('.pass-media');
+    if(!media) return;
+    const current = parseInt(media.dataset.slideIndex || '0', 10);
+    if(e.target.closest('.gallery-next')){ e.stopPropagation(); goToSlide(media, current+1); }
+    else if(e.target.closest('.gallery-prev')){ e.stopPropagation(); goToSlide(media, current-1); }
+    else if(e.target.classList.contains('gallery-dot')){ e.stopPropagation(); goToSlide(media, parseInt(e.target.dataset.index,10)); }
+  });
+});
+function renderHotels(){
+  const grid = document.getElementById('hotelsGrid');
+  grid.innerHTML = state.hotels.map(h=>passCardHTML(h,'hotel')).join('') +
+    `<div class="add-card" onclick="openEdit('hotel', null)"><i class="fa-solid fa-circle-plus"></i><span>Add a new hotel</span></div>`;
+  applyAdminClass();
+  observeReveals();
+}
+function renderPackages(){
+  const grid = document.getElementById('packagesGrid');
+  grid.innerHTML = state.packages.map(p=>passCardHTML(p,'package')).join('') +
+    `<div class="add-card" onclick="openEdit('package', null)"><i class="fa-solid fa-circle-plus"></i><span>Add a new package</span></div>`;
+  applyAdminClass();
+  observeReveals();
+}
+function renderDestinations(){
+  const wrap = document.getElementById('destScroll');
+  wrap.innerHTML = state.destinations.map(d=>`
+    <div class="dest-chip reveal">
+      <img src="${d.img}" alt="${d.name}" onerror="this.style.display='none'">
+      <div class="dest-info"><h4>${d.name}</h4><p>${d.tag}</p></div>
+      <div class="dest-edit-bar">
+        <button class="de-edit" onclick="openDestEdit('${d.id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+        <button class="de-delete" onclick="deleteDest('${d.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>`).join('') +
+    `<div class="add-dest-card" onclick="openDestEdit(null)"><i class="fa-solid fa-circle-plus"></i><span>Add destination</span></div>`;
+  observeReveals();
+}
+function openDestEdit(id){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  currentDestEditId = id;
+  const item = id ? state.destinations.find(x=>x.id===id) : null;
+  document.getElementById('destEditTitle').textContent = item ? 'Edit destination' : 'Add a new destination';
+  document.getElementById('dName').value = item ? item.name : '';
+  document.getElementById('dTag').value = item ? item.tag : '';
+  document.getElementById('dImg').value = item ? item.img : '';
+  openModal('destEditOverlay');
+}
+document.getElementById('destEditForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const payload = {
+    id: currentDestEditId || ('d'+Date.now()),
+    name: document.getElementById('dName').value.trim(),
+    tag: document.getElementById('dTag').value.trim(),
+    img: document.getElementById('dImg').value.trim() || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnZDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0VBRjRGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdkMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+W77iPPC90ZXh0Pgo8L3N2Zz4='
+  };
+  if(currentDestEditId){
+    const idx = state.destinations.findIndex(x=>x.id===currentDestEditId);
+    state.destinations[idx] = payload;
+  }else{
+    state.destinations.push(payload);
+  }
+  await saveCollection('site:destinations', state.destinations);
+  renderDestinations();
+  closeModal('destEditOverlay');
+  toast(currentDestEditId ? 'Destination updated' : 'Destination added');
+});
+async function deleteDest(id){
+  if(!state.isAdmin) return;
+  if(!confirm('Remove this destination for all visitors?')) return;
+  const idx = state.destinations.findIndex(x=>x.id===id);
+  if(idx>-1) state.destinations.splice(idx,1);
+  await saveCollection('site:destinations', state.destinations);
+  renderDestinations();
+  toast('Destination removed');
+}
+
+/* ============ TESTIMONIALS (FEEDBACKS) ============ */
+function starsHTML(rating){
+  const full = Math.floor(rating);
+  const half = rating - full >= 0.5;
+  let html = '';
+  for(let i=0;i<full;i++) html += '<i class="fa-solid fa-star"></i>';
+  if(half) html += '<i class="fa-solid fa-star-half-stroke"></i>';
+  const empty = 5 - full - (half?1:0);
+  for(let i=0;i<empty;i++) html += '<i class="fa-regular fa-star"></i>';
+  return html;
+}
+function renderTestimonials(){
+  const grid = document.getElementById('testiGrid');
+  grid.innerHTML = state.testimonials.map(t=>{
+    const initial = (t.name||'?').trim().charAt(0).toUpperCase();
+    return `
+    <div class="testi reveal" data-id="${t.id}">
+      <div class="stars">${starsHTML(t.rating)}</div>
+      <p class="quote">"${t.quote}"</p>
+      <div class="who"><div class="avatar">${initial}</div><div><h5>${t.name}</h5><span>${t.location}</span></div></div>
+      <div class="admin-edit-bar">
+        <button class="ae-edit" onclick="openTestiEdit('${t.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+        <button class="ae-delete" onclick="deleteTesti('${t.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+      </div>
+    </div>`;
+  }).join('') +
+    `<div class="add-card" style="min-height:220px;" onclick="openTestiEdit(null)"><i class="fa-solid fa-circle-plus"></i><span>Add feedback</span></div>`;
+  applyAdminClass();
+  observeReveals();
+}
+function openTestiEdit(id){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  currentTestiEditId = id;
+  const item = id ? state.testimonials.find(x=>x.id===id) : null;
+  document.getElementById('testiEditTitle').textContent = item ? 'Edit feedback' : 'Add new feedback';
+  document.getElementById('tName').value = item ? item.name : '';
+  document.getElementById('tLocation').value = item ? item.location : '';
+  document.getElementById('tQuote').value = item ? item.quote : '';
+  document.getElementById('tRating').value = item ? item.rating : 5;
+  openModal('testiEditOverlay');
+}
+document.getElementById('testiEditForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const payload = {
+    id: currentTestiEditId || ('t'+Date.now()),
+    name: document.getElementById('tName').value.trim(),
+    location: document.getElementById('tLocation').value.trim(),
+    quote: document.getElementById('tQuote').value.trim(),
+    rating: Math.max(0, Math.min(5, parseFloat(document.getElementById('tRating').value) || 5))
+  };
+  if(currentTestiEditId){
+    const idx = state.testimonials.findIndex(x=>x.id===currentTestiEditId);
+    state.testimonials[idx] = payload;
+  }else{
+    state.testimonials.push(payload);
+  }
+  await saveCollection('site:testimonials', state.testimonials);
+  renderTestimonials();
+  closeModal('testiEditOverlay');
+  toast(currentTestiEditId ? 'Feedback updated' : 'Feedback added');
+});
+async function deleteTesti(id){
+  if(!state.isAdmin) return;
+  if(!confirm('Remove this feedback for all visitors?')) return;
+  const idx = state.testimonials.findIndex(x=>x.id===id);
+  if(idx>-1) state.testimonials.splice(idx,1);
+  await saveCollection('site:testimonials', state.testimonials);
+  renderTestimonials();
+  toast('Feedback removed');
+}
+
+/* ============ SCROLL-REVEAL ANIMATIONS ============ */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+function observeReveals(){
+  document.querySelectorAll('.reveal:not(.observed)').forEach(el=>{
+    el.classList.add('observed');
+    revealObserver.observe(el);
+  });
+}
+function applyAdminClass(){
+  document.body.classList.toggle('is-admin', state.isAdmin);
+  document.querySelectorAll('.pass-card').forEach(c=>c.classList.toggle('editing', state.isAdmin));
+}
+
+/* ============ TOAST ============ */
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ============ MODAL HELPERS ============ */
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click', e=>{ if(e.target===ov) ov.classList.remove('show'); }));
+
+/* ============ ADMIN LOGIN ============ */
+function refreshAdminUI(){
+  document.getElementById('adminBar').classList.toggle('show', state.isAdmin);
+  document.getElementById('adminLoginBtn').innerHTML = state.isAdmin ? '<i class="fa-solid fa-user-check"></i>' : '<i class="fa-solid fa-lock"></i>';
+  applyAdminClass();
+}
+function openLoginModal(){ document.getElementById('loginError').style.display='none'; openModal('loginOverlay'); }
+document.getElementById('adminLoginBtn').addEventListener('click', ()=>{ if(!state.isAdmin) openLoginModal(); });
+document.getElementById('navBookNow').addEventListener('click', e=>{ e.preventDefault(); openBooking(null, null); });
+document.getElementById('adminLoginBtn2').addEventListener('click', ()=>{ if(!state.isAdmin) openLoginModal(); });
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  state.isAdmin = false; refreshAdminUI(); toast('Signed out of admin mode');
+});
+document.getElementById('loginForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    state.isAdmin = true; err.style.display='none';
+    closeModal('loginOverlay'); refreshAdminUI();
+    document.getElementById('loginForm').reset();
+    toast('Welcome back — admin mode on');
+  }else{
+    err.style.display='block';
+  }
+});
+
+/* ============ EDIT / ADD / DELETE ============ */
+function collectionFor(type){ return type==='hotel' ? state.hotels : state.packages; }
+function keyFor(type){ return type==='hotel' ? 'site:hotels' : 'site:packages'; }
+function rerender(type){ type==='hotel' ? renderHotels() : renderPackages(); }
+
+function openEdit(type, id){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  currentEdit = { type, id };
+  const list = collectionFor(type);
+  const item = id ? list.find(x=>x.id===id) : null;
+  document.getElementById('editTitle').textContent = item ? `Edit ${type}` : `Add a new ${type}`;
+  document.getElementById('fName').value = item ? item.name : '';
+  document.getElementById('fLoc').value = item ? item.location : '';
+  document.getElementById('fPrice').value = item ? item.price : '';
+  document.getElementById('fRating').value = item ? item.rating : 4.8;
+  document.getElementById('fTag').value = item ? item.tag : '';
+  document.getElementById('fImg').value = item ? getImages(item).join('\n') : '';
+  document.getElementById('fDesc').value = item ? item.desc : '';
+  openModal('editOverlay');
+}
+document.getElementById('editForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const { type, id } = currentEdit;
+  const list = collectionFor(type);
+  const imgLines = document.getElementById('fImg').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const payload = {
+    id: id || (type[0]+Date.now()),
+    name: document.getElementById('fName').value.trim(),
+    location: document.getElementById('fLoc').value.trim(),
+    price: parseFloat(document.getElementById('fPrice').value) || 0,
+    rating: parseFloat(document.getElementById('fRating').value) || 4.5,
+    tag: document.getElementById('fTag').value.trim(),
+    images: imgLines.length ? imgLines : ['data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaDEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY2QTAwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzJDNkU5RSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjYmdoMSkiLz4KICA8Y2lyY2xlIGN4PSI0ODAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xNikiLz4KICA8Y2lyY2xlIGN4PSI5MCIgY3k9IjMzMCIgcj0iMTEwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPHBhdGggZD0iTTAsMzAwIFExNTAsMjYwIDMwMCwzMDAgVDYwMCwyOTAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjIpIi8+CiAgPHBhdGggZD0iTTAsMzQwIFExNTAsMzEwIDMwMCwzNDAgVDYwMCwzMzAgVjQwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTQpIi8+CiAgPHRleHQgeD0iMzAwIiB5PSIyMTUiIGZvbnQtc2l6ZT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj7wn4+d77iPPC90ZXh0Pgo8L3N2Zz4='],
+    desc: document.getElementById('fDesc').value.trim()
+  };
+  if(id){
+    const idx = list.findIndex(x=>x.id===id);
+    list[idx] = payload;
+  }else{
+    list.push(payload);
+  }
+  await saveCollection(keyFor(type), list);
+  rerender(type);
+  closeModal('editOverlay');
+  toast(id ? 'Changes saved' : 'Added — now live on the site');
+});
+async function deleteItem(type, id){
+  if(!state.isAdmin) return;
+  if(!confirm('Remove this listing for all visitors?')) return;
+  const list = collectionFor(type);
+  const idx = list.findIndex(x=>x.id===id);
+  if(idx>-1) list.splice(idx,1);
+  await saveCollection(keyFor(type), list);
+  rerender(type);
+  toast('Listing removed');
+}
+
+/* ============ SITE SETTINGS (name, logo, contact) ============ */
+function applySettings(){
+  const s = state.settings;
+  document.title = `${s.siteName} — Travel & Hotel Booking`;
+  document.getElementById('headerLogoImg').src = s.logo;
+  document.getElementById('headerLogoImg').alt = s.siteName;
+  document.getElementById('footerLogoImg').src = s.logo;
+  document.getElementById('footerLogoImg').alt = s.siteName;
+  document.querySelector('link[rel="icon"]').href = s.logo;
+
+  document.getElementById('topbarPhone').innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phone1}`;
+  document.getElementById('topbarEmail').innerHTML = `<i class="fa-solid fa-envelope"></i> ${s.email}`;
+  document.getElementById('topbarFacebook').href = s.facebook || '#';
+  document.getElementById('footerFacebook').href = s.facebook || '#';
+
+  document.getElementById('footerAddress').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${s.address}`;
+  document.getElementById('footerPhone1').innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phone1}`;
+  const phone2El = document.getElementById('footerPhone2');
+  if(s.phone2){ phone2El.style.display=''; phone2El.innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phone2}`; }
+  else { phone2El.style.display='none'; }
+  document.getElementById('footerEmail').innerHTML = `<i class="fa-solid fa-envelope"></i> ${s.email}`;
+  document.getElementById('footCopyright').textContent = `© 2026 ${s.siteName}. All rights reserved.`;
+
+  const digits1 = (s.phone1||'').replace(/[^0-9]/g,'');
+  const digits2 = (s.phone2||'').replace(/[^0-9]/g,'');
+  document.getElementById('ctaPhone1').href = `tel:${digits1}`;
+  document.getElementById('ctaPhone1').innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phone1}`;
+  const ctaPhone2El = document.getElementById('ctaPhone2');
+  if(s.phone2){ ctaPhone2El.style.display=''; ctaPhone2El.href = `tel:${digits2}`; ctaPhone2El.innerHTML = `<i class="fa-solid fa-phone"></i> ${s.phone2}`; }
+  else { ctaPhone2El.style.display='none'; }
+  document.getElementById('ctaEmail').href = `mailto:${s.email}`;
+  document.getElementById('ctaEmail').innerHTML = `<i class="fa-solid fa-envelope"></i> ${s.email}`;
+
+  document.querySelector('.admin-bar .left span').textContent = `Admin mode — you're editing ${s.siteName} live`;
+}
+function openSettings(){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  pendingLogoDataUrl = null;
+  const s = state.settings;
+  document.getElementById('sName').value = s.siteName;
+  document.getElementById('logoPreview').src = s.logo;
+  document.getElementById('sLogoFile').value = '';
+  document.getElementById('sPhone1').value = s.phone1;
+  document.getElementById('sPhone2').value = s.phone2 || '';
+  document.getElementById('sEmail').value = s.email;
+  document.getElementById('sAddress').value = s.address;
+  document.getElementById('sFacebook').value = s.facebook || '';
+  openModal('settingsOverlay');
+}
+document.getElementById('manageSiteBtn').addEventListener('click', openSettings);
+document.getElementById('sLogoFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    pendingLogoDataUrl = reader.result;
+    document.getElementById('logoPreview').src = pendingLogoDataUrl;
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('settingsForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  state.settings = {
+    siteName: document.getElementById('sName').value.trim() || 'ABC Holidays',
+    logo: pendingLogoDataUrl || state.settings.logo,
+    phone1: document.getElementById('sPhone1').value.trim(),
+    phone2: document.getElementById('sPhone2').value.trim(),
+    email: document.getElementById('sEmail').value.trim(),
+    address: document.getElementById('sAddress').value.trim(),
+    facebook: document.getElementById('sFacebook').value.trim()
+  };
+  await storageSet('site:settings', JSON.stringify(state.settings));
+  applySettings();
+  closeModal('settingsOverlay');
+  toast('Site settings updated');
+});
+
+/* ============ PAGE TEXT (CONTENT) EDITOR ============ */
+function applyContent(){
+  const c = state.content;
+  document.getElementById('heroBadgeText').textContent = c.heroBadge;
+  document.getElementById('heroHeadline').innerHTML = c.heroHeadline;
+  document.getElementById('heroLead').textContent = c.heroLead;
+
+  document.getElementById('heroVisualCard').style.setProperty('--hero-img', `url('${c.heroImage}')`);
+  document.getElementById('cFlyBadge').textContent = c.flyBadge;
+  document.getElementById('cHeroWeather').textContent = c.heroWeather;
+  document.getElementById('cHeroLocation').textContent = c.heroLocation;
+  document.getElementById('cHeroDesc').textContent = c.heroDesc;
+  document.getElementById('cHeroPrice').textContent = c.heroPrice;
+
+  document.getElementById('cHotelsEyebrow').textContent = c.hotelsEyebrow;
+  document.getElementById('cHotelsHeading').textContent = c.hotelsHeading;
+  document.getElementById('cHotelsSubtext').textContent = c.hotelsSubtext;
+
+  document.getElementById('cPackagesEyebrow').textContent = c.packagesEyebrow;
+  document.getElementById('cPackagesHeading').textContent = c.packagesHeading;
+  document.getElementById('cPackagesSubtext').textContent = c.packagesSubtext;
+
+  document.getElementById('cDestEyebrow').textContent = c.destEyebrow;
+  document.getElementById('cDestHeading').textContent = c.destHeading;
+
+  document.getElementById('cMomentsEyebrow').textContent = c.momentsEyebrow;
+  document.getElementById('cMomentsHeading').textContent = c.momentsHeading;
+  document.getElementById('cMomentsSubtext').textContent = c.momentsSubtext;
+  document.getElementById('cMoment1').textContent = c.moment1;
+  document.getElementById('cMoment2').textContent = c.moment2;
+  document.getElementById('cMoment3').textContent = c.moment3;
+  document.getElementById('cMoment4').textContent = c.moment4;
+
+  document.getElementById('cWhyEyebrow').textContent = c.whyEyebrow;
+  document.getElementById('cWhyHeading').textContent = c.whyHeading;
+  document.getElementById('cFeat1Title').textContent = c.feat1Title;
+  document.getElementById('cFeat1Desc').textContent = c.feat1Desc;
+  document.getElementById('cFeat2Title').textContent = c.feat2Title;
+  document.getElementById('cFeat2Desc').textContent = c.feat2Desc;
+  document.getElementById('cFeat3Title').textContent = c.feat3Title;
+  document.getElementById('cFeat3Desc').textContent = c.feat3Desc;
+  document.getElementById('cFeat4Title').textContent = c.feat4Title;
+  document.getElementById('cFeat4Desc').textContent = c.feat4Desc;
+
+  document.getElementById('cTestiEyebrow').textContent = c.testiEyebrow;
+  document.getElementById('cTestiHeading').textContent = c.testiHeading;
+
+  document.getElementById('cCtaHeading').textContent = c.ctaHeading;
+  document.getElementById('cCtaSubtext').textContent = c.ctaSubtext;
+}
+const CONTENT_FIELD_MAP = {
+  cfHeroBadge:'heroBadge', cfHeroHeadline:'heroHeadline', cfHeroLead:'heroLead',
+  cfFlyBadge:'flyBadge', cfHeroWeather:'heroWeather', cfHeroLocation:'heroLocation',
+  cfHeroDesc:'heroDesc', cfHeroPrice:'heroPrice',
+  cfHotelsEyebrow:'hotelsEyebrow', cfHotelsHeading:'hotelsHeading', cfHotelsSubtext:'hotelsSubtext',
+  cfPackagesEyebrow:'packagesEyebrow', cfPackagesHeading:'packagesHeading', cfPackagesSubtext:'packagesSubtext',
+  cfDestEyebrow:'destEyebrow', cfDestHeading:'destHeading',
+  cfMomentsEyebrow:'momentsEyebrow', cfMomentsHeading:'momentsHeading', cfMomentsSubtext:'momentsSubtext',
+  cfMoment1:'moment1', cfMoment2:'moment2', cfMoment3:'moment3', cfMoment4:'moment4',
+  cfWhyEyebrow:'whyEyebrow', cfWhyHeading:'whyHeading',
+  cfFeat1Title:'feat1Title', cfFeat1Desc:'feat1Desc', cfFeat2Title:'feat2Title', cfFeat2Desc:'feat2Desc',
+  cfFeat3Title:'feat3Title', cfFeat3Desc:'feat3Desc', cfFeat4Title:'feat4Title', cfFeat4Desc:'feat4Desc',
+  cfTestiEyebrow:'testiEyebrow', cfTestiHeading:'testiHeading',
+  cfCtaHeading:'ctaHeading', cfCtaSubtext:'ctaSubtext'
+};
+function openContentEdit(){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  const c = state.content;
+  pendingHeroImageDataUrl = null;
+  Object.entries(CONTENT_FIELD_MAP).forEach(([fieldId, key])=>{
+    document.getElementById(fieldId).value = c[key] || '';
+  });
+  document.getElementById('heroImgPreview').src = c.heroImage;
+  document.getElementById('cfHeroImgFile').value = '';
+  openModal('contentEditOverlay');
+}
+document.getElementById('editTextBtn').addEventListener('click', openContentEdit);
+document.getElementById('cfHeroImgFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    pendingHeroImageDataUrl = reader.result;
+    document.getElementById('heroImgPreview').src = pendingHeroImageDataUrl;
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('contentEditForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const newContent = {};
+  Object.entries(CONTENT_FIELD_MAP).forEach(([fieldId, key])=>{
+    newContent[key] = document.getElementById(fieldId).value.trim();
+  });
+  newContent.heroImage = pendingHeroImageDataUrl || state.content.heroImage;
+  state.content = newContent;
+  await storageSet('site:content', JSON.stringify(state.content));
+  applyContent();
+  closeModal('contentEditOverlay');
+  toast('Page text updated');
+});
+
+/* ============ BOOK NOW ============ */
+function getAllDestinationOptions(){
+  const dynamic = [];
+  state.hotels.forEach(h=>dynamic.push({name:h.location, type:'hotel location'}));
+  state.packages.forEach(p=>dynamic.push({name:p.location, type:'package location'}));
+  state.destinations.forEach(d=>dynamic.push({name:d.name, type:'destination'}));
+  const combined = [...STATIC_DESTINATIONS, ...dynamic];
+  const seen = new Set();
+  return combined.filter(d=>{
+    const key = d.name.toLowerCase();
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function renderDestDropdown(query){
+  const dropdown = document.getElementById('bkDestDropdown');
+  const q = query.trim().toLowerCase();
+  if(!q){ dropdown.classList.remove('show'); dropdown.innerHTML=''; return; }
+  const matches = getAllDestinationOptions().filter(d=>d.name.toLowerCase().includes(q)).slice(0,8);
+  if(!matches.length){
+    dropdown.innerHTML = `<div class="dest-option-empty">No matches — you can still type your own destination</div>`;
+  }else{
+    dropdown.innerHTML = matches.map(d=>
+      `<div class="dest-option" data-name="${d.name.replace(/"/g,'&quot;')}"><i class="fa-solid fa-location-dot"></i> ${d.name} <span class="dtype">${d.type}</span></div>`
+    ).join('');
+  }
+  dropdown.classList.add('show');
+}
+document.getElementById('bkDest').addEventListener('input', e=> renderDestDropdown(e.target.value));
+document.getElementById('bkDest').addEventListener('focus', e=> renderDestDropdown(e.target.value));
+document.getElementById('bkDestDropdown').addEventListener('click', e=>{
+  const opt = e.target.closest('.dest-option');
+  if(!opt) return;
+  document.getElementById('bkDest').value = opt.dataset.name;
+  document.getElementById('bkDestDropdown').classList.remove('show');
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#bkDest') && !e.target.closest('#bkDestDropdown')){
+    document.getElementById('bkDestDropdown').classList.remove('show');
+  }
+});
+let currentBookingItem = null;
+function openBooking(type, id){
+  const list = type==='hotel' ? state.hotels : state.packages;
+  const item = list.find(x=>x.id===id);
+  currentBookingItem = { type, item };
+  document.getElementById('bookTitle').textContent = item ? `Book — ${item.name}` : 'Book your trip';
+  document.getElementById('bookSub').textContent = item
+    ? `${item.location} · ${CURRENCY}${item.price}${type==='package'?' / person':' / night'}. Tell us your dates and we'll confirm over WhatsApp.`
+    : `Tell us your travel plans and we'll confirm over WhatsApp.`;
+  document.getElementById('bookSuccess').style.display = 'none';
+  document.getElementById('bookForm').style.display = 'block';
+  document.getElementById('bookForm').reset();
+  document.getElementById('bkDest').value = item ? item.location : '';
+  openModal('bookOverlay');
+}
+document.getElementById('bookForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const booking = {
+    id:'b'+Date.now(),
+    itemName: currentBookingItem && currentBookingItem.item ? currentBookingItem.item.name : '',
+    itemType: currentBookingItem ? currentBookingItem.type : '',
+    destination: document.getElementById('bkDest').value.trim(),
+    date: document.getElementById('bkDate').value,
+    arrival: document.getElementById('bkArrival').value,
+    name: document.getElementById('bkName').value.trim(),
+    phone: document.getElementById('bkPhone').value.trim(),
+    email: document.getElementById('bkEmail').value.trim(),
+    createdAt: new Date().toISOString()
+  };
+  try{
+    const res = await storageGet('site:bookings');
+    const list = res && res.value ? JSON.parse(res.value) : [];
+    list.push(booking);
+    await storageSet('site:bookings', JSON.stringify(list));
+  }catch(err){ console.error(err); }
+
+  const lines = [
+    `New Booking Request — ${state.settings.siteName || 'ABC Holidays'}`,
+    booking.itemName ? `${booking.itemType === 'package' ? 'Package' : 'Hotel'}: ${booking.itemName}` : null,
+    `Destination: ${booking.destination}`,
+    `Departure date: ${booking.date}`,
+    `Arrival date: ${booking.arrival}`,
+    `Name: ${booking.name}`,
+    `Phone: ${booking.phone}`,
+    `Email: ${booking.email}`
+  ].filter(Boolean).join('\n');
+  const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const waUrl = isMobileDevice
+    ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines)}`
+    : `https://web.whatsapp.com/send?phone=${BOOKING_WHATSAPP_NUMBER}&text=${encodeURIComponent(lines)}`;
+  // A real anchor click (rather than window.open) avoids odd browser-handoff prompts
+  // some Android webviews/embedded browsers show when a script opens a new window.
+  const waLink = document.createElement('a');
+  waLink.href = waUrl;
+  waLink.target = '_blank';
+  waLink.rel = 'noopener noreferrer';
+  document.body.appendChild(waLink);
+  waLink.click();
+  document.body.removeChild(waLink);
+  document.getElementById('bookWaFallback').href = waUrl;
+
+  document.getElementById('bookForm').style.display = 'none';
+  document.getElementById('bookSuccess').style.display = 'block';
+  toast('Booking request ready on WhatsApp');
+});
+
+/* ============ INIT ============ */
+loadData();
+refreshAdminUI();
+observeReveals();
+
