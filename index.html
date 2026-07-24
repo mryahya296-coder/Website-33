@@ -92,44 +92,82 @@ nav.main{display:flex;align-items:center;justify-content:space-between;padding:1
 .icon-btn:hover{border-color:var(--orange);color:var(--orange-deep);}
 .hamburger{display:none;}
 
-/* ============ HERO ============ */
-.hero{
-  position:relative;overflow:hidden;
-  background:radial-gradient(ellipse 900px 500px at 15% -10%, #DCEEFB 0%, transparent 60%),
-             radial-gradient(ellipse 700px 500px at 100% 0%, #EAF4FF 0%, transparent 55%),
-             var(--cream);
-  padding:76px 0 130px;
+/* ============ HERO BANNER (carousel) ============ */
+.hero-banner{
+  position:relative;width:100%;height:88vh;min-height:520px;max-height:720px;overflow:hidden;background:var(--ink);
 }
-.hero .container{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
-  padding:7px 14px 7px 7px;border-radius:999px;font-size:12.5px;font-weight:700;margin-bottom:22px;box-shadow:0 6px 16px -10px rgba(0,0,0,.2);
+.hb-track{position:relative;width:100%;height:100%;}
+.hb-slide{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;transition:opacity .6s ease;display:flex;align-items:center;
 }
-.hero-badge .dot{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;}
-.hero h1{font-size:56px;margin-bottom:20px;}
-.hero h1 em{font-style:italic;color:var(--orange-deep);}
-.hero p.lead{font-size:17px;color:var(--ink-soft);max-width:480px;margin-bottom:32px;}
-.hero-ctas{display:flex;gap:14px;margin-bottom:44px;}
-.hero-stats{display:flex;gap:36px;}
-.hero-stats div h3{font-size:26px;color:var(--orange-deep);}
-.hero-stats div p{font-size:12.5px;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.hb-slide.active{opacity:1;}
+.hb-slide::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(15,20,28,.55) 10%, rgba(15,20,28,.15) 55%, rgba(15,20,28,.05) 100%);}
+.hb-content{position:relative;z-index:2;max-width:760px;padding:0 60px;color:#fff;}
+.hb-badge{
+  display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:14px;letter-spacing:.04em;
+  padding:10px 22px;border-radius:8px;margin-bottom:18px;text-transform:uppercase;
+}
+.hb-headline{
+  font-family:'Fraunces',serif;font-weight:700;font-size:64px;line-height:1.02;color:#fff;margin-bottom:16px;
+  text-transform:uppercase;letter-spacing:-0.01em;
+}
+.hb-subtext{font-size:17px;font-weight:600;color:#EAF2FA;letter-spacing:.02em;margin-bottom:34px;text-transform:uppercase;}
+.hb-cta{
+  display:inline-flex;align-items:center;gap:14px;background:rgba(15,20,28,.72);backdrop-filter:blur(4px);
+  color:#fff;font-weight:800;font-size:16px;padding:16px 26px;border-radius:10px;letter-spacing:.02em;
+  transition:transform .2s ease, background .2s ease;
+}
+.hb-cta:hover{transform:translateY(-2px);background:rgba(15,20,28,.88);}
+.hb-cta .hb-cta-highlight{color:var(--orange-light);}
+.hb-cta i{margin-left:2px;}
 
-.hero-visual{position:relative;height:460px;}
-.hero-card{
-  position:absolute;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(27,36,48,.35);
+.hb-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;z-index:3;
+  background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:background .2s ease, transform .2s ease;
 }
-.hc1{width:78%;height:80%;top:0;right:0;background:linear-gradient(160deg,var(--orange-light),var(--orange) 60%,var(--orange-deep));}
-.hc1::after{content:'';position:absolute;inset:0;background-image:var(--hero-img, url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaGVybyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxRTczQkUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMEY0QzgxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZ2hlcm8pIi8+CiAgPGNpcmNsZSBjeD0iNDgwIiBjeT0iOTAiIHI9IjcwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTYpIi8+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSIzMzAiIHI9IjExMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMwMCBRMTUwLDI2MCAzMDAsMzAwIFQ2MDAsMjkwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE4KSIvPgogIDxwYXRoIGQ9Ik0wLDM0MCBRMTUwLDMxMCAzMDAsMzQwIFQ2MDAsMzMwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjE1IiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pgo8L3N2Zz4K'));background-size:cover;background-position:center;mix-blend-mode:multiply;opacity:.85;}
-.hc2{width:56%;height:44%;bottom:0;left:0;background:#fff;padding:18px;display:flex;flex-direction:column;justify-content:space-between;}
-.hc2 .weather-emoji{font-size:30px;}
-.hc2 h4{font-size:15px;}
-.hc2 p{font-size:12px;color:var(--ink-soft);}
-.hc2 .price-tag{align-self:flex-start;background:var(--cream);color:var(--orange-deep);font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;}
-.hero .fly-badge{
-  position:absolute;top:26px;left:-14px;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:0 16px 30px -14px rgba(0,0,0,.25);
-  display:flex;align-items:center;gap:10px;font-weight:700;font-size:13px;
+.hb-arrow:hover{background:var(--orange-deep);transform:translateY(-50%) scale(1.06);}
+.hb-prev{left:24px;}
+.hb-next{right:24px;}
+.hb-dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3;}
+.hb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .2s ease;}
+.hb-dot.active{background:#fff;width:22px;border-radius:5px;}
+
+.hb-admin-controls{position:absolute;top:20px;right:24px;display:none;gap:8px;z-index:4;}
+body.is-admin .hb-admin-controls{display:flex;}
+.hb-admin-btn{
+  width:36px;height:36px;border-radius:50%;background:rgba(15,20,28,.75);color:#fff;display:flex;align-items:center;
+  justify-content:center;font-size:13px;transition:background .2s ease, transform .2s ease;
 }
-.hero .fly-badge i{color:var(--orange);}
+.hb-admin-btn:hover{background:var(--orange);transform:scale(1.06);}
+
+/* ============ FLOATING WHATSAPP CHAT ============ */
+.wa-float{position:fixed;right:24px;bottom:24px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.wa-pill{
+  display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:10px 10px 10px 18px;
+  box-shadow:0 16px 32px -14px rgba(27,36,48,.35);font-weight:700;font-size:14px;color:var(--ink);
+  animation:fadeInUp .5s ease .6s both;
+}
+.wa-pill button{width:24px;height:24px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-soft);}
+.wa-pill button:hover{background:var(--line);}
+.wa-btn{
+  width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:28px;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 16px 32px -12px rgba(18,140,126,.55);
+  transition:transform .2s ease;
+}
+.wa-btn:hover{transform:translateY(-3px) scale(1.05);}
+
+@media(max-width:680px){
+  .hero-banner{height:78vh;min-height:440px;}
+  .hb-content{padding:0 26px;}
+  .hb-headline{font-size:38px;}
+  .hb-subtext{font-size:13.5px;}
+  .hb-cta{font-size:13px;padding:13px 18px;}
+  .hb-arrow{width:36px;height:36px;font-size:13px;}
+  .wa-pill span{display:none;}
+  .wa-pill{padding:10px;}
+}
 
 /* ============ SEARCH WIDGET (boarding pass style) ============ */
 .search-wrap{margin-top:-70px;position:relative;z-index:20;}
@@ -356,8 +394,6 @@ footer ul a:hover{color:var(--orange-light);}
 
 /* Responsive */
 @media(max-width:980px){
-  .hero .container{grid-template-columns:1fr;}
-  .hero-visual{display:none;}
   .grid{grid-template-columns:repeat(2,1fr);}
   .feat-grid{grid-template-columns:repeat(2,1fr);}
   .testi-grid{grid-template-columns:1fr;}
@@ -385,11 +421,7 @@ footer ul a:hover{color:var(--orange-light);}
 @keyframes spinSlow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
 /* Hero entrance */
-.hero-copy{animation:fadeInUp .8s cubic-bezier(.22,1,.36,1) both;}
-.hero-visual{animation:fadeInUp .9s cubic-bezier(.22,1,.36,1) .15s both;}
-.hero-badge .dot{animation:pulseSoft 2.6s ease-in-out infinite;}
-.hc1{animation:floatSlow 6s ease-in-out infinite;}
-.fly-badge{animation:fadeInUp .8s cubic-bezier(.22,1,.36,1) .3s both;}
+.hb-content{animation:fadeInUp .8s cubic-bezier(.22,1,.36,1) both;}
 
 /* Scroll-reveal (JS adds .in-view when element enters viewport) */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1);}
@@ -498,6 +530,33 @@ body.is-admin .add-dest-card{display:flex;}
   .moments-grid{grid-template-columns:1fr;}
 }
 
+/* ============ FLOATING WHATSAPP CHAT BUBBLE ============ */
+.floating-chat{
+  position:fixed;bottom:26px;right:26px;z-index:150;display:flex;align-items:center;gap:12px;
+}
+.chat-tooltip{
+  background:#fff;padding:10px 14px 10px 18px;border-radius:999px;box-shadow:0 14px 30px -14px rgba(15,20,28,.35);
+  font-weight:700;font-size:13.5px;color:var(--ink);display:flex;align-items:center;gap:10px;
+  animation:fadeInUp .6s cubic-bezier(.22,1,.36,1) 1.2s both;
+}
+.chat-tooltip-close{
+  width:20px;height:20px;border-radius:50%;background:var(--cream);color:var(--ink-soft);
+  display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;
+}
+.chat-tooltip-close:hover{background:var(--ink);color:#fff;}
+.chat-tooltip.hidden{display:none;}
+.chat-bubble{
+  width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:27px;box-shadow:0 16px 32px -12px rgba(18,140,126,.55);
+  transition:transform .25s cubic-bezier(.22,1,.36,1);animation:pulseSoft 3s ease-in-out infinite;
+}
+.chat-bubble:hover{transform:scale(1.08);}
+@media(max-width:680px){
+  .floating-chat{bottom:18px;right:18px;}
+  .chat-tooltip{display:none;}
+  .chat-bubble{width:52px;height:52px;font-size:24px;}
+}
+
 </style>
 </head>
 <body>
@@ -546,35 +605,16 @@ body.is-admin .add-dest-card{display:flex;}
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-copy">
-      <div class="hero-badge"><span class="dot"><i class="fa-solid fa-star"></i></span> <span id="heroBadgeText">Rated 4.9 by 12,000+ travellers</span></div>
-      <h1 id="heroHeadline">Holidays that feel<br><em>hand-picked</em>, not off the shelf.</h1>
-      <p class="lead" id="heroLead">ABC Holidays curates hotels, escapes and full itineraries across the globe — real people planning real trips, from a weekend in Skardu to a honeymoon in Santorini.</p>
-      <div class="hero-ctas">
-        <a href="#hotels" class="btn btn-primary"><i class="fa-solid fa-hotel"></i> Browse hotels</a>
-        <a href="#packages" class="btn btn-outline"><i class="fa-solid fa-suitcase-rolling"></i> View packages</a>
-      </div>
-      <div class="hero-stats">
-        <div><h3>240+</h3><p>Hotel partners</p></div>
-        <div><h3>65</h3><p>Countries covered</p></div>
-        <div><h3>12K+</h3><p>Happy travellers</p></div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="fly-badge"><i class="fa-solid fa-paper-plane"></i> <span id="cFlyBadge">Next departure: Fri, 9:40 AM</span></div>
-      <div class="hero-card hc1" id="heroVisualCard"></div>
-      <div class="hero-card hc2">
-        <div>
-          <div class="weather-emoji" id="cHeroWeather">☀️ 28°C</div>
-          <h4 id="cHeroLocation">Maldives, Water Villa</h4>
-          <p id="cHeroDesc">Clear skies this week — perfect for the overwater suite.</p>
-        </div>
-        <span class="price-tag" id="cHeroPrice">From ₨189/night</span>
-      </div>
-    </div>
+<!-- HERO BANNER (carousel, admin-editable slides) -->
+<section class="hero-banner" id="heroBanner">
+  <div class="hb-track" id="heroBannerTrack"></div>
+  <button class="hb-arrow hb-prev" onclick="heroSlideStep(-1)" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="hb-arrow hb-next" onclick="heroSlideStep(1)" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="hb-dots" id="heroBannerDots"></div>
+  <div class="hb-admin-controls">
+    <button class="hb-admin-btn" onclick="openHeroSlideEdit(currentHeroSlideIndex)" title="Edit this slide"><i class="fa-solid fa-pen"></i></button>
+    <button class="hb-admin-btn" onclick="deleteHeroSlide(currentHeroSlideIndex)" title="Delete this slide"><i class="fa-solid fa-trash"></i></button>
+    <button class="hb-admin-btn" onclick="openHeroSlideEdit(null)" title="Add new slide"><i class="fa-solid fa-plus"></i></button>
   </div>
 </section>
 
@@ -631,19 +671,19 @@ body.is-admin .add-dest-card{display:flex;}
     </div>
     <div class="moments-grid">
       <div class="moment-card reveal">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreVNraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOEZDQkVBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjAlIiBzdG9wLWNvbG9yPSIjQ0ZFQkZBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRkZGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic25vd1NraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0U2RjFGOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5U2tpKSIvPgogIDxjaXJjbGUgY3g9IjQ5MCIgY3k9IjkwIiByPSI0NiIgZmlsbD0iI0ZGRTlCOCIgb3BhY2l0eT0iMC45Ii8+CiAgPCEtLSBkaXN0YW50IHBlYWtzIC0tPgogIDxwYXRoIGQ9Ik0wLDI2MCBMMTIwLDE0MCBMMjIwLDI2MCBMMzIwLDE2MCBMNDMwLDI2MCBMNjAwLDE4MCBMNjAwLDUwMCBMMCw1MDAgWiIgZmlsbD0iI0I5RDZFOCIvPgogIDwhLS0gbWFpbiBzbG9wZSAtLT4KICA8cGF0aCBkPSJNMCw1MDAgTDAsMzMwIFEyMDAsMjIwIDM4MCwzMDAgUTUyMCwzNTAgNjAwLDMwMCBMNjAwLDUwMCBaIiBmaWxsPSJ1cmwoI3Nub3dTa2kpIi8+CiAgPCEtLSBza2kgdHJhaWwgbWFya3MgLS0+CiAgPHBhdGggZD0iTTQyMCwzMDAgUTQwMCwzNDAgNDMwLDM4MCBRNDUwLDQxMCA0MjUsNDUwIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTQ0MCwyOTUgUTQyNSwzMzUgNDUyLDM3MiBRNDcwLDQwABC0NDgsNDQyIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBza2llciBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxNSwyNTUpIHJvdGF0ZSgxOCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTC00LDMyIEwtMTYsNTUiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTDEwLDMwIEw2LDU0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsMTQgTC0yNCw0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMywxNCBMMjYsMjIiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxyZWN0IHg9Ii0yMiIgeT0iNjAiIHdpZHRoPSIzNCIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRkY2QTAwIiB0cmFuc2Zvcm09InJvdGF0ZSgtNiAtMjIgNjApIi8+CiAgICA8cmVjdCB4PSIwIiB5PSI1OCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjUiIHJ4PSIyLjUiIGZpbGw9IiNGRjZBMDAiIHRyYW5zZm9ybT0icm90YXRlKDYgMCA1OCkiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDcwIFExNTAsNDQwIDMwMCw0NjggVDYwMCw0NTUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz4KPC9zdmc+" alt="Skiing down a snowy mountain slope">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreVNraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOEZDQkVBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjAlIiBzdG9wLWNvbG9yPSIjQ0ZFQkZBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRkZGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic25vd1NraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0U2RjFGOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5U2tpKSIvPgogIDxjaXJjbGUgY3g9IjQ5MCIgY3k9IjkwIiByPSI0NiIgZmlsbD0iI0ZGRTlCOCIgb3BhY2l0eT0iMC45Ii8+CiAgPCEtLSBkaXN0YW50IHBlYWtzIC0tPgogIDxwYXRoIGQ9Ik0wLDI2MCBMMTIwLDE0MCBMMjIwLDI2MCBMMzIwLDE2MCBMNDMwLDI2MCBMNjAwLDE4MCBMNjAwLDUwMCBMMCw1MDAgWiIgZmlsbD0iI0I5RDZFOCIvPgogIDwhLS0gbWFpbiBzbG9wZSAtLT4KICA8cGF0aCBkPSJNMCw1MDAgTDAsMzMwIFEyMDAsMjIwIDM4MCwzMDAgUTUyMCwzNTAgNjAwLDMwMCBMNjAwLDUwMCBaIiBmaWxsPSJ1cmwoI3Nub3dTa2kpIi8+CiAgPCEtLSBza2kgdHJhaWwgbWFya3MgLS0+CiAgPHBhdGggZD0iTTQyMCwzMDAgUTQwMCwzNDAgNDMwLDM4MCBRNDUwLDQxMCA0MjUsNDUwIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTQ0MCwyOTUgUTQyNSwzMzUgNDUyLDM3MiBRNDcwLDQwABC0NDgsNDQyIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBza2llciBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxNSwyNTUpIHJvdGF0ZSgxOCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTC00LDMyIEwtMTYsNTUiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTDEwLDMwIEw2LDU0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsMTQgTC0yNCw0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMywxNCBMMjYsMjIiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxyZWN0IHg9Ii0yMiIgeT0iNjAiIHdpZHRoPSIzNCIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRkY2QTAwIiB0cmFuc2Zvcm09InJvdGF0ZSgtNiAtMjIgNjApIi8+CiAgICA8cmVjdCB4PSIwIiB5PSI1OCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjUiIHJ4PSIyLjUiIGZpbGw9IiNGRjZBMDAiIHRyYW5zZm9ybT0icm90YXRlKDYgMCA1OCkiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDcwIFExNTAsNDQwIDMwMCw0NjggVDYwMCw0NTUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz4KPC9zdmc+" alt="Skiing down a snowy mountain slope" id="cMoment1Img">
         <div class="moment-label"><i class="fa-solid fa-person-skiing"></i> <span id="cMoment1">Ski escapes</span></div>
       </div>
       <div class="moment-card reveal">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJhbCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZCOThBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjRkZEOUIzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRjNFNiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5QmFsKSIvPgogIDxjaXJjbGUgY3g9IjQ4MCIgY3k9IjExMCIgcj0iNjAiIGZpbGw9IiNGRkYxRDYiIG9wYWNpdHk9IjAuODUiLz4KICA8ZWxsaXBzZSBjeD0iMTIwIiBjeT0iNDIwIiByeD0iMjYwIiByeT0iOTAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zNSkiLz4KICA8ZWxsaXBzZSBjeD0iNDcwIiBjeT0iNDQwIiByeD0iMjIwIiByeT0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPgogIDwhLS0gYmFsbG9vbnMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLDE5MCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRjZBMDAiLz4KICAgIDxwYXRoIGQ9Ik0tOTAsMCBRMCwzMCA5MCwwIiBzdHJva2U9IiNDNzQ0MEQiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIvPgogICAgPHBhdGggZD0iTS02MCwtNzAgUTAsLTEwIDYwLC03MCIgc3Ryb2tlPSIjQzc0NDBEIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNiIvPgogICAgPHBhdGggZD0iTS0zMCwxMDUgTC0xNiwxNTAgTTMwLDEwNSBMMTYsMTUwIiBzdHJva2U9IiM1QjNBMjkiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHJlY3QgeD0iLTE4IiB5PSIxNTAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgcng9IjQiIGZpbGw9IiM1QjNBMjkiLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLDI2MCkgc2NhbGUoMC41NSkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRkNGOEMiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2MCwzMDApIHNjYWxlKDAuNCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiMyRThCOUEiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxwYXRoIGQ9Ik0wLDQ3MCBRMTUwLDQ0MCAzMDAsNDY4IFQ2MDAsNDU1IFY1MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjUpIi8+Cjwvc3ZnPg==" alt="Hot air balloons at sunrise">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJhbCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZCOThBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjRkZEOUIzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRjNFNiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5QmFsKSIvPgogIDxjaXJjbGUgY3g9IjQ4MCIgY3k9IjExMCIgcj0iNjAiIGZpbGw9IiNGRkYxRDYiIG9wYWNpdHk9IjAuODUiLz4KICA8ZWxsaXBzZSBjeD0iMTIwIiBjeT0iNDIwIiByeD0iMjYwIiByeT0iOTAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zNSkiLz4KICA8ZWxsaXBzZSBjeD0iNDcwIiBjeT0iNDQwIiByeD0iMjIwIiByeT0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPgogIDwhLS0gYmFsbG9vbnMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLDE5MCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRjZBMDAiLz4KICAgIDxwYXRoIGQ9Ik0tOTAsMCBRMCwzMCA5MCwwIiBzdHJva2U9IiNDNzQ0MEQiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIvPgogICAgPHBhdGggZD0iTS02MCwtNzAgUTAsLTEwIDYwLC03MCIgc3Ryb2tlPSIjQzc0NDBEIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNiIvPgogICAgPHBhdGggZD0iTS0zMCwxMDUgTC0xNiwxNTAgTTMwLDEwNSBMMTYsMTUwIiBzdHJva2U9IiM1QjNBMjkiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHJlY3QgeD0iLTE4IiB5PSIxNTAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgcng9IjQiIGZpbGw9IiM1QjNBMjkiLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLDI2MCkgc2NhbGUoMC41NSkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRkNGOEMiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2MCwzMDApIHNjYWxlKDAuNCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiMyRThCOUEiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxwYXRoIGQ9Ik0wLDQ3MCBRMTUwLDQ0MCAzMDAsNDY4IFQ2MDAsNDU1IFY1MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjUpIi8+Cjwvc3ZnPg==" alt="Hot air balloons at sunrise" id="cMoment2Img">
         <div class="moment-label"><i class="fa-solid fa-wind"></i> <span id="cMoment2">Hot air ballooning</span></div>
       </div>
       <div class="moment-card reveal">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUhpa2UiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjYwJSIgc3RvcC1jb2xvcj0iI0ZGQjk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNFMjdCM0QiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNTAwIiBmaWxsPSJ1cmwoI3NreUhpa2UpIi8+CiAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iMTIwIiByPSI3MCIgZmlsbD0iI0ZGRjNENiIgb3BhY2l0eT0iMC45Ii8+CiAgPHBhdGggZD0iTTAsMzIwIEwxNTAsMTQwIEwyNjAsMzAwIEwzNDAsMTkwIEw0MzAsMzIwIEw2MDAsMjIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjN0E0QjJFIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTAsMzgwIEwxODAsMjIwIEwzMDAsMzYwIEw0MDAsMjYwIEw1MjAsMzgwIEw2MDAsMzIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjNUIzQTI5IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPCEtLSB0cmFpbCAtLT4KICA8cGF0aCBkPSJNMjgwLDUwMCBRMzAwLDQyMCAyNjAsMzYwIFEyMzAsMzIwIDI3MCwyODAiIHN0cm9rZT0iI0U4RDlDNCIgc3Ryb2tlLXdpZHRoPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIwLjciLz4KICA8IS0tIGhpa2VyIHNpbGhvdWV0dGUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc1LDMwMCkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9Ii00MCIgcj0iMTAiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxyZWN0IHg9Ii04IiB5PSItMzAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMCIgcng9IjQiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0yMCBMLTMsMTUgTC0xMiw0NSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsLTIwIEw2LDE0IEw0LDQ2IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsLTE0IEwtMjIsNSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTMsLTE0IEwxOCwtMiIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE4LC0yIEwzMCwtMjQiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDYwIFExNTAsNDMwIDMwMCw0NTggVDYwMCw0NDUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTgpIi8+Cjwvc3ZnPg==" alt="Hiking a mountain trail at sunset">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUhpa2UiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjYwJSIgc3RvcC1jb2xvcj0iI0ZGQjk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNFMjdCM0QiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNTAwIiBmaWxsPSJ1cmwoI3NreUhpa2UpIi8+CiAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iMTIwIiByPSI3MCIgZmlsbD0iI0ZGRjNENiIgb3BhY2l0eT0iMC45Ii8+CiAgPHBhdGggZD0iTTAsMzIwIEwxNTAsMTQwIEwyNjAsMzAwIEwzNDAsMTkwIEw0MzAsMzIwIEw2MDAsMjIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjN0E0QjJFIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTAsMzgwIEwxODAsMjIwIEwzMDAsMzYwIEw0MDAsMjYwIEw1MjAsMzgwIEw2MDAsMzIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjNUIzQTI5IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPCEtLSB0cmFpbCAtLT4KICA8cGF0aCBkPSJNMjgwLDUwMCBRMzAwLDQyMCAyNjAsMzYwIFEyMzAsMzIwIDI3MCwyODAiIHN0cm9rZT0iI0U4RDlDNCIgc3Ryb2tlLXdpZHRoPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIwLjciLz4KICA8IS0tIGhpa2VyIHNpbGhvdWV0dGUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc1LDMwMCkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9Ii00MCIgcj0iMTAiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxyZWN0IHg9Ii04IiB5PSItMzAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMCIgcng9IjQiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0yMCBMLTMsMTUgTC0xMiw0NSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsLTIwIEw2LDE0IEw0LDQ2IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsLTE0IEwtMjIsNSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTMsLTE0IEwxOCwtMiIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE4LC0yIEwzMCwtMjQiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDYwIFExNTAsNDMwIDMwMCw0NTggVDYwMCw0NDUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTgpIi8+Cjwvc3ZnPg==" alt="Hiking a mountain trail at sunset" id="cMoment3Img">
         <div class="moment-label"><i class="fa-solid fa-person-hiking"></i> <span id="cMoment3">Mountain treks</span></div>
       </div>
       <div class="moment-card reveal">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJlYWNoIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGRkNGOEMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNGRkI0QTIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNza3lCZWFjaCkiLz4KICA8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyMjAiIHI9IjY1IiBmaWxsPSIjRkZGM0Q2IiBvcGFjaXR5PSIwLjk1Ii8+CiAgPHBhdGggZD0iTTAsMzIwIFExNTAsMjkwIDMwMCwzMjAgVDYwMCwzMTAgVjUwMCBIMCBaIiBmaWxsPSIjMkM2RTlFIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTAsMzYwIFExNTAsMzM1IDMwMCwzNjAgVDYwMCwzNTAgVjUwMCBIMCBaIiBmaWxsPSIjNEZBM0QxIiBvcGFjaXR5PSIwLjkiLz4KICA8cGF0aCBkPSJNMCw0MTAgUTE1MCwzOTAgMzAwLDQxMiBUNjAwLDQwMCBWNTAwIEgwIFoiIGZpbGw9IiNGNEUzQzgiLz4KICA8IS0tIHBhbG0gLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODAsMzAwKSI+CiAgICA8cGF0aCBkPSJNMCwwIEwtMTAsOTAiIHN0cm9rZT0iIzVCM0EyOSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEtNDAsLTIwIC02MCwtMTAiIHN0cm9rZT0iIzJFOEI5QSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEzMCwtMjUgNTUsLTE0IiBzdHJva2U9IiMyRThCOUEiIHN0cm9rZS13aWR0aD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsMCBRLTEwLC0zNSA1LC01NSIgc3Ryb2tlPSIjMkU4QjlBIiBzdHJva2Utd2lkdGg9IjEwIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPCEtLSBjb3VwbGUgd2Fsa2luZyBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMzMCw0MzApIj4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSItMzgiIHI9IjgiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0zMCBMLTMsLTQgTC04LDIwIE0wLC0zMCBMNCwtNSBMMiwyMCIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPGNpcmNsZSBjeD0iMjIiIGN5PSItMzQiIHI9IjciIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0yMiwtMjcgTDE5LC02IEwxNSwxNiBNMjIsLTI3IEwyNiwtNyBMMjQsMTYiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0LjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8cGF0aCBkPSJNMCw0NjAgUTE1MCw0NDAgMzAwLDQ2MCBUNjAwLDQ1MCBWNTAwIEgwIFoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yNSkiLz4KPC9zdmc+" alt="Couple walking along a beach at sunset">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJlYWNoIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGRkNGOEMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNGRkI0QTIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNza3lCZWFjaCkiLz4KICA8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyMjAiIHI9IjY1IiBmaWxsPSIjRkZGM0Q2IiBvcGFjaXR5PSIwLjk1Ii8+CiAgPHBhdGggZD0iTTAsMzIwIFExNTAsMjkwIDMwMCwzMjAgVDYwMCwzMTAgVjUwMCBIMCBaIiBmaWxsPSIjMkM2RTlFIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTAsMzYwIFExNTAsMzM1IDMwMCwzNjAgVDYwMCwzNTAgVjUwMCBIMCBaIiBmaWxsPSIjNEZBM0QxIiBvcGFjaXR5PSIwLjkiLz4KICA8cGF0aCBkPSJNMCw0MTAgUTE1MCwzOTAgMzAwLDQxMiBUNjAwLDQwMCBWNTAwIEgwIFoiIGZpbGw9IiNGNEUzQzgiLz4KICA8IS0tIHBhbG0gLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODAsMzAwKSI+CiAgICA8cGF0aCBkPSJNMCwwIEwtMTAsOTAiIHN0cm9rZT0iIzVCM0EyOSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEtNDAsLTIwIC02MCwtMTAiIHN0cm9rZT0iIzJFOEI5QSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEzMCwtMjUgNTUsLTE0IiBzdHJva2U9IiMyRThCOUEiIHN0cm9rZS13aWR0aD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsMCBRLTEwLC0zNSA1LC01NSIgc3Ryb2tlPSIjMkU4QjlBIiBzdHJva2Utd2lkdGg9IjEwIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPCEtLSBjb3VwbGUgd2Fsa2luZyBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMzMCw0MzApIj4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSItMzgiIHI9IjgiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0zMCBMLTMsLTQgTC04LDIwIE0wLC0zMCBMNCwtNSBMMiwyMCIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPGNpcmNsZSBjeD0iMjIiIGN5PSItMzQiIHI9IjciIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0yMiwtMjcgTDE5LC02IEwxNSwxNiBNMjIsLTI3IEwyNiwtNyBMMjQsMTYiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0LjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8cGF0aCBkPSJNMCw0NjAgUTE1MCw0NDAgMzAwLDQ2MCBUNjAwLDQ1MCBWNTAwIEgwIFoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yNSkiLz4KPC9zdmc+" alt="Couple walking along a beach at sunset" id="cMoment4Img">
         <div class="moment-label"><i class="fa-solid fa-umbrella-beach"></i> <span id="cMoment4">Beach walks</span></div>
       </div>
     </div>
@@ -826,6 +866,32 @@ body.is-admin .add-dest-card{display:flex;}
   </div>
 </div>
 
+<!-- Hero banner slide edit/add modal -->
+<div class="modal-overlay" id="heroSlideEditOverlay">
+  <div class="modal wide">
+    <button class="modal-close" data-close="heroSlideEditOverlay"><i class="fa-solid fa-xmark"></i></button>
+    <h3 id="hsEditTitle">Edit hero slide</h3>
+    <p class="sub">This is the big full-width banner at the very top of your site.</p>
+    <form id="heroSlideEditForm">
+      <div class="form-group">
+        <label>Background image</label>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <img id="hsImgPreview" src="" alt="Slide preview" style="height:60px;width:100px;object-fit:cover;border-radius:8px;background:var(--cream);">
+          <input type="file" id="hsImgFile" accept="image/*" style="flex:1;">
+        </div>
+      </div>
+      <div class="form-group"><label>Badge text</label><input type="text" id="hsBadge" placeholder="e.g. ESCAPE TO PARADISE" required></div>
+      <div class="form-group"><label>Headline</label><input type="text" id="hsHeadline" placeholder="e.g. THIS SUMMER" required></div>
+      <div class="form-group"><label>Subtext</label><input type="text" id="hsSubtext" placeholder="e.g. Unforgettable beach holidays & international getaways" required></div>
+      <div class="form-row">
+        <div class="form-group"><label>Button text (white part)</label><input type="text" id="hsCtaMain" placeholder="e.g. BOOK YOUR" required></div>
+        <div class="form-group"><label>Button text (highlighted part)</label><input type="text" id="hsCtaHighlight" placeholder="e.g. SUMMER ESCAPE" required></div>
+      </div>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save slide</button>
+    </form>
+  </div>
+</div>
+
 <!-- Testimonial (feedback) edit/add modal -->
 <div class="modal-overlay" id="testiEditOverlay">
   <div class="modal">
@@ -874,31 +940,8 @@ body.is-admin .add-dest-card{display:flex;}
   <div class="modal wide">
     <button class="modal-close" data-close="contentEditOverlay"><i class="fa-solid fa-xmark"></i></button>
     <h3>Edit page text</h3>
-    <p class="sub">Every headline and blurb on the landing page, all in one place.</p>
+    <p class="sub">Every headline and blurb on the landing page, all in one place. (The hero banner itself is edited separately — use the pencil icon on the banner.)</p>
     <form id="contentEditForm">
-      <p class="sub" style="margin-bottom:12px;font-weight:700;color:var(--ink);">Hero</p>
-      <div class="form-group"><label>Badge text</label><input type="text" id="cfHeroBadge" required></div>
-      <div class="form-group"><label>Headline <span style="font-weight:400;color:var(--ink-soft);">(optional: &lt;br&gt; for a line break, &lt;em&gt;word&lt;/em&gt; to italicize)</span></label><textarea id="cfHeroHeadline" rows="2" required></textarea></div>
-      <div class="form-group"><label>Subtext</label><textarea id="cfHeroLead" rows="3" required></textarea></div>
-
-      <hr style="border:none;border-top:1px solid var(--line);margin:20px 0;">
-      <p class="sub" style="margin-bottom:12px;font-weight:700;color:var(--ink);">Hero visual card</p>
-      <div class="form-group">
-        <label>Card image</label>
-        <div style="display:flex;align-items:center;gap:14px;">
-          <img id="heroImgPreview" src="" alt="Hero image preview" style="height:60px;width:80px;object-fit:cover;border-radius:8px;background:var(--cream);">
-          <input type="file" id="cfHeroImgFile" accept="image/*" style="flex:1;">
-        </div>
-      </div>
-      <div class="form-group"><label>"Next departure" badge text</label><input type="text" id="cfFlyBadge" required></div>
-      <div class="form-row">
-        <div class="form-group"><label>Weather line (e.g. ☀️ 28°C)</label><input type="text" id="cfHeroWeather" required></div>
-        <div class="form-group"><label>Location name</label><input type="text" id="cfHeroLocation" required></div>
-      </div>
-      <div class="form-group"><label>Description</label><input type="text" id="cfHeroDesc" required></div>
-      <div class="form-group"><label>Price line</label><input type="text" id="cfHeroPrice" required></div>
-
-      <hr style="border:none;border-top:1px solid var(--line);margin:20px 0;">
       <p class="sub" style="margin-bottom:12px;font-weight:700;color:var(--ink);">Hotels section</p>
       <div class="form-row">
         <div class="form-group"><label>Eyebrow</label><input type="text" id="cfHotelsEyebrow" required></div>
@@ -928,13 +971,38 @@ body.is-admin .add-dest-card{display:flex;}
         <div class="form-group"><label>Heading</label><input type="text" id="cfMomentsHeading" required></div>
       </div>
       <div class="form-group"><label>Subtext</label><input type="text" id="cfMomentsSubtext" required></div>
-      <div class="form-row">
-        <div class="form-group"><label>Photo 1 caption</label><input type="text" id="cfMoment1" required></div>
-        <div class="form-group"><label>Photo 2 caption</label><input type="text" id="cfMoment2" required></div>
+
+      <div class="form-group">
+        <label>Photo 1</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <img id="moment1ImgPreview" src="" alt="" style="height:44px;width:60px;object-fit:cover;border-radius:6px;background:var(--cream);">
+          <input type="file" id="cfMoment1File" accept="image/*" style="flex:1;">
+        </div>
+        <input type="text" id="cfMoment1" placeholder="Caption, e.g. Ski escapes" required>
       </div>
-      <div class="form-row">
-        <div class="form-group"><label>Photo 3 caption</label><input type="text" id="cfMoment3" required></div>
-        <div class="form-group"><label>Photo 4 caption</label><input type="text" id="cfMoment4" required></div>
+      <div class="form-group">
+        <label>Photo 2</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <img id="moment2ImgPreview" src="" alt="" style="height:44px;width:60px;object-fit:cover;border-radius:6px;background:var(--cream);">
+          <input type="file" id="cfMoment2File" accept="image/*" style="flex:1;">
+        </div>
+        <input type="text" id="cfMoment2" placeholder="Caption, e.g. Hot air ballooning" required>
+      </div>
+      <div class="form-group">
+        <label>Photo 3</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <img id="moment3ImgPreview" src="" alt="" style="height:44px;width:60px;object-fit:cover;border-radius:6px;background:var(--cream);">
+          <input type="file" id="cfMoment3File" accept="image/*" style="flex:1;">
+        </div>
+        <input type="text" id="cfMoment3" placeholder="Caption, e.g. Mountain treks" required>
+      </div>
+      <div class="form-group">
+        <label>Photo 4</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <img id="moment4ImgPreview" src="" alt="" style="height:44px;width:60px;object-fit:cover;border-radius:6px;background:var(--cream);">
+          <input type="file" id="cfMoment4File" accept="image/*" style="flex:1;">
+        </div>
+        <input type="text" id="cfMoment4" placeholder="Caption, e.g. Beach walks" required>
       </div>
 
       <hr style="border:none;border-top:1px solid var(--line);margin:20px 0;">
@@ -979,9 +1047,25 @@ body.is-admin .add-dest-card{display:flex;}
 
 <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Saved</span></div>
 
+<!-- FLOATING WHATSAPP CHAT BUBBLE -->
+<div class="floating-chat" id="floatingChat">
+  <div class="chat-tooltip" id="chatTooltip">
+    Chat with us
+    <button class="chat-tooltip-close" id="chatTooltipClose" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <button class="chat-bubble" id="chatBubbleBtn" aria-label="Chat with us on WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+</div>
+
+<!-- FLOATING WHATSAPP CHAT -->
+<div class="wa-float" id="waFloat">
+  <div class="wa-pill" id="waPill">
+    <span>Chat with us</span>
+    <button type="button" id="waPillClose" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <button type="button" class="wa-btn" id="waFloatBtn" title="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+</div>
+
 <script src = "js/app.js"></script>
-
 <script type="module" src="js/firebase.js"></script>
-
 </body>
 </html>

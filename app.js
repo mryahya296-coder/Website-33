@@ -30,16 +30,11 @@ const DEFAULT_SETTINGS = {
   address: '106, 1st Floor, Iconic Trade Centre, Bahadurabad, Karachi, Pakistan',
   facebook: 'https://www.facebook.com/M.I.AHOLIDAYS/'
 };
+const DEFAULT_HERO_SLIDES = [
+  {id:'hs1', image:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAwIDcwMCIgd2lkdGg9IjE2MDAiIGhlaWdodD0iNzAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5QiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMkU4NkQ4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjNkZCOEU4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0JGRTNGMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2VhQiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUU5QUE4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzEyNzA3QyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iNzAwIiBmaWxsPSJ1cmwoI3NreUIpIi8+CiAgPGNpcmNsZSBjeD0iMTI1MCIgY3k9IjE1MCIgcj0iMzAwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTApIi8+CiAgPGVsbGlwc2UgY3g9IjIwMCIgY3k9IjEyMCIgcng9IjE0MCIgcnk9IjQwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNTUpIi8+CiAgPGVsbGlwc2UgY3g9IjM0MCIgY3k9IjkwIiByeD0iMTAwIiByeT0iMzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC40NSkiLz4KICA8ZWxsaXBzZSBjeD0iMTQwMCIgY3k9IjE4MCIgcng9IjE2MCIgcnk9IjQ1IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiLz4KICA8cGF0aCBkPSJNMCw0MzAgUTQwMCwzODAgODAwLDQzMCBUMTYwMCw0MTAgVjcwMCBIMCBaIiBmaWxsPSJ1cmwoI3NlYUIpIi8+CiAgPHBhdGggZD0iTTAsNDcwIFE0MDAsNDMwIDgwMCw0NzAgVDE2MDAsNDUwIFY3MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIvPgogIDxwYXRoIGQ9Ik0wLDU2MCBRNDAwLDUzMCA4MDAsNTU1IFQxNjAwLDU0MCBWNzAwIEgwIFoiIGZpbGw9IiNFN0QzQTYiLz4KICA8cGF0aCBkPSJNOTAwLDcwMCBMOTgwLDU2MCBMMTA2MCw2NTAgTDExNTAsNTQwIEwxMjUwLDcwMCBaIiBmaWxsPSIjMkU2QjRGIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTIwLDQyMCkiPgogICAgPHBhdGggZD0iTTAsMCBDLTEwLDkwIC0zMCwxODAgLTYwLDI2MCIgc3Ryb2tlPSIjM0IyQTFFIiBzdHJva2Utd2lkdGg9IjE4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDEwIFEtOTAsLTMwIC0xNjAsMTAiIHN0cm9rZT0iIzFGN0E0QyIgc3Ryb2tlLXdpZHRoPSIyMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwxMCBRODAsLTQwIDE1MCwtMTAiIHN0cm9rZT0iIzI0OTA1OCIgc3Ryb2tlLXdpZHRoPSIyMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEtNDAsLTcwIC0yMCwtMTQwIiBzdHJva2U9IiMxRjdBNEMiIHN0cm9rZS13aWR0aD0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsMCBRNTAsLTgwIDQwLC0xNTAiIHN0cm9rZT0iIzI0OTA1OCIgc3Ryb2tlLXdpZHRoPSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwtMTAgUTAsLTEwMCAzMCwtMTYwIiBzdHJva2U9IiMyQ0EzNjYiIHN0cm9rZS13aWR0aD0iMTgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNjAsNDcwKSBzY2FsZSgwLjc1KSI+CiAgICA8cGF0aCBkPSJNMCwwIEMtMTAsOTAgLTMwLDE4MCAtNjAsMjYwIiBzdHJva2U9IiMzQjJBMUUiIHN0cm9rZS13aWR0aD0iMTgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsMTAgUS05MCwtMzAgLTE2MCwxMCIgc3Ryb2tlPSIjMUY3QTRDIiBzdHJva2Utd2lkdGg9IjIyIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDEwIFE4MCwtNDAgMTUwLC0xMCIgc3Ryb2tlPSIjMjQ5MDU4IiBzdHJva2Utd2lkdGg9IjIyIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDAgUS00MCwtNzAgLTIwLC0xNDAiIHN0cm9rZT0iIzFGN0E0QyIgc3Ryb2tlLXdpZHRoPSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFE1MCwtODAgNDAsLTE1MCIgc3Ryb2tlPSIjMjQ5MDU4IiBzdHJva2Utd2lkdGg9IjIwIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNjIwIFE0MDAsNTkwIDgwMCw2MTUgVDE2MDAsNjA1IFY3MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjM1KSIvPgo8L3N2Zz4=', badge:'ESCAPE TO PARADISE', headline:'THIS SUMMER', subtext:'Unforgettable beach holidays & international getaways', ctaMain:'BOOK YOUR', ctaHighlight:'SUMMER ESCAPE'},
+  {id:'hs2', image:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAwIDcwMCIgd2lkdGg9IjE2MDAiIGhlaWdodD0iNzAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5TSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjRkZCOThBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRDlCMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iNzAwIiBmaWxsPSJ1cmwoI3NreU0pIi8+CiAgPGNpcmNsZSBjeD0iODAwIiBjeT0iMjIwIiByPSIxMTAiIGZpbGw9InJnYmEoMjU1LDI0NywyMjQsMC45KSIvPgogIDxwYXRoIGQ9Ik0wLDQyMCBMMjYwLDE2MCBMNDgwLDQyMCBaIiBmaWxsPSIjNUI2QjdBIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTMwMCw0MjAgTDYyMCwxMjAgTDkyMCw0MjAgWiIgZmlsbD0iIzQ2NTY2NiIgb3BhY2l0eT0iMC42NSIvPgogIDxwYXRoIGQ9Ik03MDAsNDIwIEwxMDAwLDIwMCBMMTMwMCw0MjAgWiIgZmlsbD0iIzMzNDQ1NCIgb3BhY2l0eT0iMC43NSIvPgogIDxwYXRoIGQ9Ik0xMDUwLDQyMCBMMTMyMCwyMjAgTDE2MDAsNDIwIFoiIGZpbGw9IiMyNDM0NDQiIG9wYWNpdHk9IjAuODUiLz4KICA8cGF0aCBkPSJNMjYwLDE2MCBMMzAwLDIyMCBMMjIwLDIyMCBaIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTYyMCwxMjAgTDY2MCwxOTAgTDU4MCwxOTAgWiIgZmlsbD0iI0ZGRkZGRiIgb3BhY2l0eT0iMC45Ii8+CiAgPHBhdGggZD0iTTEwMDAsMjAwIEwxMDM1LDI1NSBMOTY1LDI1NSBaIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjkiLz4KICA8cGF0aCBkPSJNMTMyMCwyMjAgTDEzNTUsMjcwIEwxMjg1LDI3MCBaIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjkiLz4KICA8cGF0aCBkPSJNMCw0MjAgTDE2MDAsNDIwIEwxNjAwLDcwMCBMMCw3MDAgWiIgZmlsbD0iIzFDMkIzQSIvPgogIDxwYXRoIGQ9Ik0wLDQ2MCBRNDAwLDQzMCA4MDAsNDU1IFQxNjAwLDQ0MCBWNzAwIEgwIFoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNikiLz4KPC9zdmc+', badge:'ADVENTURE AWAITS', headline:'EXPLORE MORE', subtext:'Mountain treks, alpine lodges and unforgettable trails', ctaMain:'DISCOVER', ctaHighlight:'MOUNTAIN ESCAPES'}
+];
 const DEFAULT_CONTENT = {
-  heroBadge: 'Rated 4.9 by 12,000+ travellers',
-  heroHeadline: 'Holidays that feel<br><em>hand-picked</em>, not off the shelf.',
-  heroLead: 'ABC Holidays curates hotels, escapes and full itineraries across the globe — real people planning real trips, from a weekend in Skardu to a honeymoon in Santorini.',
-  heroImage: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnaGVybyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxRTczQkUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMEY0QzgxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNiZ2hlcm8pIi8+CiAgPGNpcmNsZSBjeD0iNDgwIiBjeT0iOTAiIHI9IjcwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTYpIi8+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSIzMzAiIHI9IjExMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDxwYXRoIGQ9Ik0wLDMwMCBRMTUwLDI2MCAzMDAsMzAwIFQ2MDAsMjkwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjE4KSIvPgogIDxwYXRoIGQ9Ik0wLDM0MCBRMTUwLDMxMCAzMDAsMzQwIFQ2MDAsMzMwIFY0MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEwKSIvPgogIDx0ZXh0IHg9IjMwMCIgeT0iMjE1IiBmb250LXNpemU9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+4pyI77iPPC90ZXh0Pgo8L3N2Zz4K',
-  flyBadge: 'Next departure: Fri, 9:40 AM',
-  heroWeather: '☀️ 28°C',
-  heroLocation: 'Maldives, Water Villa',
-  heroDesc: 'Clear skies this week — perfect for the overwater suite.',
-  heroPrice: 'From ₨189/night',
   hotelsEyebrow: 'Stays we vouch for',
   hotelsHeading: 'Hotels our travellers keep going back to',
   hotelsSubtext: 'Hand-inspected properties across every budget — boutique riads, beach resorts and city stays with the details that matter.',
@@ -55,6 +50,10 @@ const DEFAULT_CONTENT = {
   moment2: 'Hot air ballooning',
   moment3: 'Mountain treks',
   moment4: 'Beach walks',
+  moment1Image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreVNraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOEZDQkVBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjAlIiBzdG9wLWNvbG9yPSIjQ0ZFQkZBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRkZGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic25vd1NraSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZGRkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0U2RjFGOCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5U2tpKSIvPgogIDxjaXJjbGUgY3g9IjQ5MCIgY3k9IjkwIiByPSI0NiIgZmlsbD0iI0ZGRTlCOCIgb3BhY2l0eT0iMC45Ii8+CiAgPCEtLSBkaXN0YW50IHBlYWtzIC0tPgogIDxwYXRoIGQ9Ik0wLDI2MCBMMTIwLDE0MCBMMjIwLDI2MCBMMzIwLDE2MCBMNDMwLDI2MCBMNjAwLDE4MCBMNjAwLDUwMCBMMCw1MDAgWiIgZmlsbD0iI0I5RDZFOCIvPgogIDwhLS0gbWFpbiBzbG9wZSAtLT4KICA8cGF0aCBkPSJNMCw1MDAgTDAsMzMwIFEyMDAsMjIwIDM4MCwzMDAgUTUyMCwzNTAgNjAwLDMwMCBMNjAwLDUwMCBaIiBmaWxsPSJ1cmwoI3Nub3dTa2kpIi8+CiAgPCEtLSBza2kgdHJhaWwgbWFya3MgLS0+CiAgPHBhdGggZD0iTTQyMCwzMDAgUTQwMCwzNDAgNDMwLDM4MCBRNDUwLDQxMCA0MjUsNDUwIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTQ0MCwyOTUgUTQyNSwzMzUgNDUyLDM3MiBRNDcwLDQwABC0NDgsNDQyIiBzdHJva2U9IiNDN0RDRTgiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBza2llciBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxNSwyNTUpIHJvdGF0ZSgxOCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTC00LDMyIEwtMTYsNTUiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxwYXRoIGQ9Ik0wLDcgTDEwLDMwIEw2LDU0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsMTQgTC0yNCw0IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMywxNCBMMjYsMjIiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI1IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgIDxyZWN0IHg9Ii0yMiIgeT0iNjAiIHdpZHRoPSIzNCIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRkY2QTAwIiB0cmFuc2Zvcm09InJvdGF0ZSgtNiAtMjIgNjApIi8+CiAgICA8cmVjdCB4PSIwIiB5PSI1OCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjUiIHJ4PSIyLjUiIGZpbGw9IiNGRjZBMDAiIHRyYW5zZm9ybT0icm90YXRlKDYgMCA1OCkiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDcwIFExNTAsNDQwIDMwMCw0NjggVDYwMCw0NTUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz4KPC9zdmc+',
+  moment2Image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJhbCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkZCOThBIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjRkZEOUIzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0ZGRjNFNiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9InVybCgjc2t5QmFsKSIvPgogIDxjaXJjbGUgY3g9IjQ4MCIgY3k9IjExMCIgcj0iNjAiIGZpbGw9IiNGRkYxRDYiIG9wYWNpdHk9IjAuODUiLz4KICA8ZWxsaXBzZSBjeD0iMTIwIiBjeT0iNDIwIiByeD0iMjYwIiByeT0iOTAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zNSkiLz4KICA8ZWxsaXBzZSBjeD0iNDcwIiBjeT0iNDQwIiByeD0iMjIwIiByeT0iNzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIvPgogIDwhLS0gYmFsbG9vbnMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLDE5MCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRjZBMDAiLz4KICAgIDxwYXRoIGQ9Ik0tOTAsMCBRMCwzMCA5MCwwIiBzdHJva2U9IiNDNzQ0MEQiIHN0cm9rZS13aWR0aD0iNCIgZmlsbD0ibm9uZSIvPgogICAgPHBhdGggZD0iTS02MCwtNzAgUTAsLTEwIDYwLC03MCIgc3Ryb2tlPSIjQzc0NDBEIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNiIvPgogICAgPHBhdGggZD0iTS0zMCwxMDUgTC0xNiwxNTAgTTMwLDEwNSBMMTYsMTUwIiBzdHJva2U9IiM1QjNBMjkiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPHJlY3QgeD0iLTE4IiB5PSIxNTAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgcng9IjQiIGZpbGw9IiM1QjNBMjkiLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwLDI2MCkgc2NhbGUoMC41NSkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiNGRkNGOEMiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2MCwzMDApIHNjYWxlKDAuNCkiPgogICAgPGVsbGlwc2UgY3g9IjAiIGN5PSIwIiByeD0iOTAiIHJ5PSIxMTAiIGZpbGw9IiMyRThCOUEiLz4KICAgIDxwYXRoIGQ9Ik0tMzAsMTA1IEwtMTYsMTUwIE0zMCwxMDUgTDE2LDE1MCIgc3Ryb2tlPSIjNUIzQTI5IiBzdHJva2Utd2lkdGg9IjQiLz4KICAgIDxyZWN0IHg9Ii0xOCIgeT0iMTUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjNUIzQTI5Ii8+CiAgPC9nPgogIDxwYXRoIGQ9Ik0wLDQ3MCBRMTUwLDQ0MCAzMDAsNDY4IFQ2MDAsNDU1IFY1MDAgSDAgWiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjUpIi8+Cjwvc3ZnPg==',
+  moment3Image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUhpa2UiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRDk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjYwJSIgc3RvcC1jb2xvcj0iI0ZGQjk4QSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNFMjdCM0QiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNTAwIiBmaWxsPSJ1cmwoI3NreUhpa2UpIi8+CiAgPGNpcmNsZSBjeD0iMTUwIiBjeT0iMTIwIiByPSI3MCIgZmlsbD0iI0ZGRjNENiIgb3BhY2l0eT0iMC45Ii8+CiAgPHBhdGggZD0iTTAsMzIwIEwxNTAsMTQwIEwyNjAsMzAwIEwzNDAsMTkwIEw0MzAsMzIwIEw2MDAsMjIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjN0E0QjJFIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTAsMzgwIEwxODAsMjIwIEwzMDAsMzYwIEw0MDAsMjYwIEw1MjAsMzgwIEw2MDAsMzIwIEw2MDAsNTAwIEwwLDUwMCBaIiBmaWxsPSIjNUIzQTI5IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPCEtLSB0cmFpbCAtLT4KICA8cGF0aCBkPSJNMjgwLDUwMCBRMzAwLDQyMCAyNjAsMzYwIFEyMzAsMzIwIDI3MCwyODAiIHN0cm9rZT0iI0U4RDlDNCIgc3Ryb2tlLXdpZHRoPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIwLjciLz4KICA8IS0tIGhpa2VyIHNpbGhvdWV0dGUgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjc1LDMwMCkiPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9Ii00MCIgcj0iMTAiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxyZWN0IHg9Ii04IiB5PSItMzAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMCIgcng9IjQiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0yMCBMLTMsMTUgTC0xMiw0NSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsLTIwIEw2LDE0IEw0LDQ2IiBzdHJva2U9IiMyNDFDMTUiIHN0cm9rZS13aWR0aD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNLTIsLTE0IEwtMjIsNSIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTMsLTE0IEwxOCwtMiIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE4LC0yIEwzMCwtMjQiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPHBhdGggZD0iTTAsNDYwIFExNTAsNDMwIDMwMCw0NTggVDYwMCw0NDUgVjUwMCBIMCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTgpIi8+Cjwvc3ZnPg==',
+  moment4Image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNTAwIiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InNreUJlYWNoIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGRkNGOEMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNGRkI0QTIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNEZBM0QxIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNza3lCZWFjaCkiLz4KICA8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyMjAiIHI9IjY1IiBmaWxsPSIjRkZGM0Q2IiBvcGFjaXR5PSIwLjk1Ii8+CiAgPHBhdGggZD0iTTAsMzIwIFExNTAsMjkwIDMwMCwzMjAgVDYwMCwzMTAgVjUwMCBIMCBaIiBmaWxsPSIjMkM2RTlFIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTAsMzYwIFExNTAsMzM1IDMwMCwzNjAgVDYwMCwzNTAgVjUwMCBIMCBaIiBmaWxsPSIjNEZBM0QxIiBvcGFjaXR5PSIwLjkiLz4KICA8cGF0aCBkPSJNMCw0MTAgUTE1MCwzOTAgMzAwLDQxMiBUNjAwLDQwMCBWNTAwIEgwIFoiIGZpbGw9IiNGNEUzQzgiLz4KICA8IS0tIHBhbG0gLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODAsMzAwKSI+CiAgICA8cGF0aCBkPSJNMCwwIEwtMTAsOTAiIHN0cm9rZT0iIzVCM0EyOSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEtNDAsLTIwIC02MCwtMTAiIHN0cm9rZT0iIzJFOEI5QSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMCwwIFEzMCwtMjUgNTUsLTE0IiBzdHJva2U9IiMyRThCOUEiIHN0cm9rZS13aWR0aD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTAsMCBRLTEwLC0zNSA1LC01NSIgc3Ryb2tlPSIjMkU4QjlBIiBzdHJva2Utd2lkdGg9IjEwIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8L2c+CiAgPCEtLSBjb3VwbGUgd2Fsa2luZyBzaWxob3VldHRlIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMzMCw0MzApIj4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSItMzgiIHI9IjgiIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0wLC0zMCBMLTMsLTQgTC04LDIwIE0wLC0zMCBMNCwtNSBMMiwyMCIgc3Ryb2tlPSIjMjQxQzE1IiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPGNpcmNsZSBjeD0iMjIiIGN5PSItMzQiIHI9IjciIGZpbGw9IiMyNDFDMTUiLz4KICAgIDxwYXRoIGQ9Ik0yMiwtMjcgTDE5LC02IEwxNSwxNiBNMjIsLTI3IEwyNiwtNyBMMjQsMTYiIHN0cm9rZT0iIzI0MUMxNSIgc3Ryb2tlLXdpZHRoPSI0LjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8cGF0aCBkPSJNMCw0NjAgUTE1MCw0NDAgMzAwLDQ2MCBUNjAwLDQ1MCBWNTAwIEgwIFoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yNSkiLz4KPC9zdmc+',
   whyEyebrow: 'The ABC difference',
   whyHeading: "Planning a trip shouldn't feel like a job",
   feat1Title: 'Best price promise',
@@ -76,6 +75,23 @@ const DEFAULT_TESTIMONIALS = [
   {id:'t3', name:'Sana M.', location:'Istanbul, April 2026', quote:'Changed our dates twice and it was handled without any fuss. This is now our go-to for every family trip.', rating:4.5}
 ];
 const BOOKING_WHATSAPP_NUMBER = '923332311922'; // 03332311922 in international format, no leading 0/+
+
+function buildWhatsAppUrl(message, isMobileDevice){
+  return isMobileDevice
+    ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+    : `https://web.whatsapp.com/send?phone=${BOOKING_WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+}
+function openWhatsAppLink(url){
+  // A real anchor click (rather than window.open) avoids odd browser-handoff prompts
+  // some Android webviews/embedded browsers show when a script opens a new window.
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 /* Static list of popular countries & cities for the booking destination search,
    merged at runtime with whatever hotels/packages/destinations the admin has added. */
@@ -132,36 +148,43 @@ async function storageSet(key, value){
   try{ localStorage.setItem(key, value); return true; }catch(e){ return false; }
 }
 
-let state = { hotels:[], packages:[], destinations:[], testimonials:[], settings:{}, content:{}, isAdmin:false };
+let state = { hotels:[], packages:[], destinations:[], testimonials:[], heroSlides:[], settings:{}, content:{}, isAdmin:false };
 let currentEdit = { type:null, id:null };
 let currentDestEditId = null;
 let currentTestiEditId = null;
+let currentHeroSlideEditId = null;
+let currentHeroSlideIndex = 0;
+let heroSlideTimer = null;
 let pendingLogoDataUrl = null;
-let pendingHeroImageDataUrl = null;
+let pendingHeroSlideImageDataUrl = null;
+let pendingMomentImages = { moment1Image:null, moment2Image:null, moment3Image:null, moment4Image:null };
 
 async function loadData(){
   // Bump this whenever DEFAULT_HOTELS/PACKAGES/DESTINATIONS/TESTIMONIALS change, so anyone who already
   // saved the old sample data (e.g. with broken image links) gets refreshed automatically.
-  const DATA_VERSION = '5';
+  const DATA_VERSION = '6';
   const v = await storageGet('site:dataVersion');
   if(!v || v.value !== DATA_VERSION){
     await storageSet('site:hotels', JSON.stringify(DEFAULT_HOTELS));
     await storageSet('site:packages', JSON.stringify(DEFAULT_PACKAGES));
     await storageSet('site:destinations', JSON.stringify(DEFAULT_DESTINATIONS));
     await storageSet('site:testimonials', JSON.stringify(DEFAULT_TESTIMONIALS));
+    await storageSet('site:heroSlides', JSON.stringify(DEFAULT_HERO_SLIDES));
     await storageSet('site:dataVersion', DATA_VERSION);
   }
   state.hotels = await getOrSeed('site:hotels', DEFAULT_HOTELS);
   state.packages = await getOrSeed('site:packages', DEFAULT_PACKAGES);
   state.destinations = await getOrSeed('site:destinations', DEFAULT_DESTINATIONS);
   state.testimonials = await getOrSeed('site:testimonials', DEFAULT_TESTIMONIALS);
+  state.heroSlides = await getOrSeed('site:heroSlides', DEFAULT_HERO_SLIDES);
+  if(!state.heroSlides || !state.heroSlides.length) state.heroSlides = DEFAULT_HERO_SLIDES;
   // Merge with defaults so newly-added settings fields (e.g. hero text) always have a value
   // even for admins who saved settings before those fields existed.
   const savedSettings = await getOrSeed('site:settings', DEFAULT_SETTINGS);
   state.settings = { ...DEFAULT_SETTINGS, ...savedSettings };
   const savedContent = await getOrSeed('site:content', DEFAULT_CONTENT);
   state.content = { ...DEFAULT_CONTENT, ...savedContent };
-  renderHotels(); renderPackages(); renderDestinations(); renderTestimonials();
+  renderHotels(); renderPackages(); renderDestinations(); renderTestimonials(); renderHeroSlides();
   applySettings(); applyContent();
 }
 async function getOrSeed(key, fallback){
@@ -583,17 +606,6 @@ document.getElementById('settingsForm').addEventListener('submit', async e=>{
 /* ============ PAGE TEXT (CONTENT) EDITOR ============ */
 function applyContent(){
   const c = state.content;
-  document.getElementById('heroBadgeText').textContent = c.heroBadge;
-  document.getElementById('heroHeadline').innerHTML = c.heroHeadline;
-  document.getElementById('heroLead').textContent = c.heroLead;
-
-  document.getElementById('heroVisualCard').style.setProperty('--hero-img', `url('${c.heroImage}')`);
-  document.getElementById('cFlyBadge').textContent = c.flyBadge;
-  document.getElementById('cHeroWeather').textContent = c.heroWeather;
-  document.getElementById('cHeroLocation').textContent = c.heroLocation;
-  document.getElementById('cHeroDesc').textContent = c.heroDesc;
-  document.getElementById('cHeroPrice').textContent = c.heroPrice;
-
   document.getElementById('cHotelsEyebrow').textContent = c.hotelsEyebrow;
   document.getElementById('cHotelsHeading').textContent = c.hotelsHeading;
   document.getElementById('cHotelsSubtext').textContent = c.hotelsSubtext;
@@ -612,6 +624,10 @@ function applyContent(){
   document.getElementById('cMoment2').textContent = c.moment2;
   document.getElementById('cMoment3').textContent = c.moment3;
   document.getElementById('cMoment4').textContent = c.moment4;
+  document.getElementById('cMoment1Img').src = c.moment1Image;
+  document.getElementById('cMoment2Img').src = c.moment2Image;
+  document.getElementById('cMoment3Img').src = c.moment3Image;
+  document.getElementById('cMoment4Img').src = c.moment4Image;
 
   document.getElementById('cWhyEyebrow').textContent = c.whyEyebrow;
   document.getElementById('cWhyHeading').textContent = c.whyHeading;
@@ -631,9 +647,6 @@ function applyContent(){
   document.getElementById('cCtaSubtext').textContent = c.ctaSubtext;
 }
 const CONTENT_FIELD_MAP = {
-  cfHeroBadge:'heroBadge', cfHeroHeadline:'heroHeadline', cfHeroLead:'heroLead',
-  cfFlyBadge:'flyBadge', cfHeroWeather:'heroWeather', cfHeroLocation:'heroLocation',
-  cfHeroDesc:'heroDesc', cfHeroPrice:'heroPrice',
   cfHotelsEyebrow:'hotelsEyebrow', cfHotelsHeading:'hotelsHeading', cfHotelsSubtext:'hotelsSubtext',
   cfPackagesEyebrow:'packagesEyebrow', cfPackagesHeading:'packagesHeading', cfPackagesSubtext:'packagesSubtext',
   cfDestEyebrow:'destEyebrow', cfDestHeading:'destHeading',
@@ -648,24 +661,29 @@ const CONTENT_FIELD_MAP = {
 function openContentEdit(){
   if(!state.isAdmin){ openLoginModal(); return; }
   const c = state.content;
-  pendingHeroImageDataUrl = null;
   Object.entries(CONTENT_FIELD_MAP).forEach(([fieldId, key])=>{
     document.getElementById(fieldId).value = c[key] || '';
   });
-  document.getElementById('heroImgPreview').src = c.heroImage;
-  document.getElementById('cfHeroImgFile').value = '';
+  pendingMomentImages = { moment1Image:null, moment2Image:null, moment3Image:null, moment4Image:null };
+  document.getElementById('moment1ImgPreview').src = c.moment1Image;
+  document.getElementById('moment2ImgPreview').src = c.moment2Image;
+  document.getElementById('moment3ImgPreview').src = c.moment3Image;
+  document.getElementById('moment4ImgPreview').src = c.moment4Image;
+  ['1','2','3','4'].forEach(n => document.getElementById(`cfMoment${n}File`).value = '');
   openModal('contentEditOverlay');
 }
 document.getElementById('editTextBtn').addEventListener('click', openContentEdit);
-document.getElementById('cfHeroImgFile').addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ()=>{
-    pendingHeroImageDataUrl = reader.result;
-    document.getElementById('heroImgPreview').src = pendingHeroImageDataUrl;
-  };
-  reader.readAsDataURL(file);
+['1','2','3','4'].forEach(n=>{
+  document.getElementById(`cfMoment${n}File`).addEventListener('change', e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      pendingMomentImages[`moment${n}Image`] = reader.result;
+      document.getElementById(`moment${n}ImgPreview`).src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
 });
 document.getElementById('contentEditForm').addEventListener('submit', async e=>{
   e.preventDefault();
@@ -673,13 +691,109 @@ document.getElementById('contentEditForm').addEventListener('submit', async e=>{
   Object.entries(CONTENT_FIELD_MAP).forEach(([fieldId, key])=>{
     newContent[key] = document.getElementById(fieldId).value.trim();
   });
-  newContent.heroImage = pendingHeroImageDataUrl || state.content.heroImage;
+  ['moment1Image','moment2Image','moment3Image','moment4Image'].forEach(key=>{
+    newContent[key] = pendingMomentImages[key] || state.content[key];
+  });
   state.content = newContent;
   await storageSet('site:content', JSON.stringify(state.content));
   applyContent();
   closeModal('contentEditOverlay');
   toast('Page text updated');
 });
+
+/* ============ HERO BANNER SLIDES (carousel) ============ */
+function renderHeroSlides(){
+  const track = document.getElementById('heroBannerTrack');
+  const dotsWrap = document.getElementById('heroBannerDots');
+  if(currentHeroSlideIndex >= state.heroSlides.length) currentHeroSlideIndex = 0;
+  track.innerHTML = state.heroSlides.map((s,i)=>`
+    <div class="hb-slide ${i===currentHeroSlideIndex?'active':''}" style="background-image:url('${s.image}')" data-index="${i}">
+      <div class="hb-content">
+        <span class="hb-badge">${s.badge}</span>
+        <h1 class="hb-headline">${s.headline}</h1>
+        <p class="hb-subtext">${s.subtext}</p>
+        <button type="button" class="hb-cta" onclick="openBooking(null,null)">${s.ctaMain} <span class="hb-cta-highlight">${s.ctaHighlight}</span> <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>`).join('');
+  dotsWrap.innerHTML = state.heroSlides.length > 1
+    ? state.heroSlides.map((_,i)=>`<span class="hb-dot ${i===currentHeroSlideIndex?'active':''}" onclick="heroSlideGoTo(${i})"></span>`).join('')
+    : '';
+  document.querySelectorAll('.hb-arrow').forEach(a=>a.style.display = state.heroSlides.length > 1 ? 'flex' : 'none');
+  restartHeroAutoplay();
+}
+function heroSlideGoTo(index){
+  currentHeroSlideIndex = ((index % state.heroSlides.length) + state.heroSlides.length) % state.heroSlides.length;
+  renderHeroSlides();
+}
+function heroSlideStep(delta){
+  heroSlideGoTo(currentHeroSlideIndex + delta);
+}
+function restartHeroAutoplay(){
+  if(heroSlideTimer) clearInterval(heroSlideTimer);
+  if(state.heroSlides.length > 1){
+    heroSlideTimer = setInterval(()=> heroSlideStep(1), 6000);
+  }
+}
+function openHeroSlideEdit(indexOrNull){
+  if(!state.isAdmin){ openLoginModal(); return; }
+  currentHeroSlideEditId = indexOrNull === null ? null : state.heroSlides[indexOrNull].id;
+  pendingHeroSlideImageDataUrl = null;
+  const item = indexOrNull !== null ? state.heroSlides[indexOrNull] : null;
+  document.getElementById('hsEditTitle').textContent = item ? 'Edit hero slide' : 'Add hero slide';
+  document.getElementById('hsImgPreview').src = item ? item.image : 'images/hero-banner1.svg';
+  document.getElementById('hsImgFile').value = '';
+  document.getElementById('hsBadge').value = item ? item.badge : '';
+  document.getElementById('hsHeadline').value = item ? item.headline : '';
+  document.getElementById('hsSubtext').value = item ? item.subtext : '';
+  document.getElementById('hsCtaMain').value = item ? item.ctaMain : '';
+  document.getElementById('hsCtaHighlight').value = item ? item.ctaHighlight : '';
+  openModal('heroSlideEditOverlay');
+}
+document.getElementById('hsImgFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    pendingHeroSlideImageDataUrl = reader.result;
+    document.getElementById('hsImgPreview').src = pendingHeroSlideImageDataUrl;
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('heroSlideEditForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const existing = currentHeroSlideEditId ? state.heroSlides.find(s=>s.id===currentHeroSlideEditId) : null;
+  const payload = {
+    id: currentHeroSlideEditId || ('hs'+Date.now()),
+    image: pendingHeroSlideImageDataUrl || (existing ? existing.image : 'images/hero-banner1.svg'),
+    badge: document.getElementById('hsBadge').value.trim(),
+    headline: document.getElementById('hsHeadline').value.trim(),
+    subtext: document.getElementById('hsSubtext').value.trim(),
+    ctaMain: document.getElementById('hsCtaMain').value.trim(),
+    ctaHighlight: document.getElementById('hsCtaHighlight').value.trim()
+  };
+  if(currentHeroSlideEditId){
+    const idx = state.heroSlides.findIndex(s=>s.id===currentHeroSlideEditId);
+    state.heroSlides[idx] = payload;
+  }else{
+    state.heroSlides.push(payload);
+    currentHeroSlideIndex = state.heroSlides.length - 1;
+  }
+  await saveCollection('site:heroSlides', state.heroSlides);
+  renderHeroSlides();
+  closeModal('heroSlideEditOverlay');
+  toast(currentHeroSlideEditId ? 'Slide updated' : 'Slide added');
+});
+async function deleteHeroSlide(index){
+  if(!state.isAdmin) return;
+  if(state.heroSlides.length <= 1){ toast('Keep at least one hero slide'); return; }
+  if(!confirm('Remove this hero slide for all visitors?')) return;
+  state.heroSlides.splice(index,1);
+  if(currentHeroSlideIndex >= state.heroSlides.length) currentHeroSlideIndex = 0;
+  await saveCollection('site:heroSlides', state.heroSlides);
+  renderHeroSlides();
+  toast('Slide removed');
+}
+
 
 /* ============ BOOK NOW ============ */
 function getAllDestinationOptions(){
@@ -770,18 +884,8 @@ document.getElementById('bookForm').addEventListener('submit', async e=>{
     `Email: ${booking.email}`
   ].filter(Boolean).join('\n');
   const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const waUrl = isMobileDevice
-    ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines)}`
-    : `https://web.whatsapp.com/send?phone=${BOOKING_WHATSAPP_NUMBER}&text=${encodeURIComponent(lines)}`;
-  // A real anchor click (rather than window.open) avoids odd browser-handoff prompts
-  // some Android webviews/embedded browsers show when a script opens a new window.
-  const waLink = document.createElement('a');
-  waLink.href = waUrl;
-  waLink.target = '_blank';
-  waLink.rel = 'noopener noreferrer';
-  document.body.appendChild(waLink);
-  waLink.click();
-  document.body.removeChild(waLink);
+  const waUrl = buildWhatsAppUrl(lines, isMobileDevice);
+  openWhatsAppLink(waUrl);
   document.getElementById('bookWaFallback').href = waUrl;
 
   document.getElementById('bookForm').style.display = 'none';
@@ -789,8 +893,18 @@ document.getElementById('bookForm').addEventListener('submit', async e=>{
   toast('Booking request ready on WhatsApp');
 });
 
+/* ============ FLOATING WHATSAPP CHAT BUBBLE ============ */
+document.getElementById('chatBubbleBtn').addEventListener('click', ()=>{
+  const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const greeting = `Hi ${state.settings.siteName || 'ABC Holidays'}, I'd like some help planning a trip.`;
+  openWhatsAppLink(buildWhatsAppUrl(greeting, isMobileDevice));
+});
+document.getElementById('chatTooltipClose').addEventListener('click', e=>{
+  e.stopPropagation();
+  document.getElementById('chatTooltip').classList.add('hidden');
+});
+
 /* ============ INIT ============ */
 loadData();
 refreshAdminUI();
 observeReveals();
-
