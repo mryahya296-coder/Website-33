@@ -1,7 +1,8 @@
 import { auth } from "./firebase.js";
 
 import {
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const email = document.getElementById("email");
@@ -173,3 +174,14 @@ document.getElementById("manageReviews").onclick=showReviews;
 document.getElementById("manageHero").onclick=showHero;
 
 document.getElementById("manageSettings").onclick=showSettings;
+
+
+document.getElementById("logoutBtn").onclick = async () => {
+
+    await signOut(auth);
+
+    document.getElementById("dashboard").style.display="none";
+
+    document.getElementById("loginPage").style.display="flex";
+
+};
