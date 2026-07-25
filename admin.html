@@ -11,55 +11,91 @@
 
 <body>
 
-<div class="login-box">
+<div id="loginPage">
 
-    <h1>ABC Holidays</h1>
+    <div class="login-box">
 
-    <h2>Administrator Login</h2>
+        <h1>ABC Holidays</h1>
 
-    <input
-        id="email"
-        type="email"
-        placeholder="Email">
+        <h3>Administrator Login</h3>
 
-    <input
-        id="password"
-        type="password"
-        placeholder="Password">
+        <input id="email" type="email" placeholder="Email">
 
-    <button id="loginBtn">
-        Login
-    </button>
+        <input id="password" type="password" placeholder="Password">
 
-    <p id="error"></p>
+        <button id="loginBtn">Login</button>
 
-<div id="dashboard" style="display:none;">
-
-    <div class="sidebar">
-
-        <h2>ABC Holidays</h2>
-
-        <button id="manageHotels">🏨 Hotels</button>
-
-        <button id="managePackages">📦 Packages</button>
-
-        <button id="manageReviews">⭐ Reviews</button>
-
-        <button id="manageHero">🖼 Hero Banner</button>
-
-        <button id="logoutBtn">Logout</button>
-
-    </div>
-
-    <div class="content" id="content">
-
-        <h1>Welcome Admin</h1>
-
-        <p>Select any option from the left menu.</p>
+        <p id="error"></p>
 
     </div>
 
 </div>
+
+
+<div id="dashboard" style="display:none;">
+
+    <aside class="sidebar">
+
+        <h2>ABC Holidays</h2>
+
+        <button class="menu active" id="dashboardBtn">
+            📊 Dashboard
+        </button>
+
+        <button class="menu" id="manageHotels">
+            🏨 Hotels
+        </button>
+
+        <button class="menu" id="managePackages">
+            📦 Packages
+        </button>
+
+        <button class="menu" id="manageReviews">
+            ⭐ Reviews
+        </button>
+
+        <button class="menu" id="manageHero">
+            🖼 Hero Banner
+        </button>
+
+        <button class="menu" id="manageSettings">
+            ⚙ Settings
+        </button>
+
+        <button class="logout" id="logoutBtn">
+            Logout
+        </button>
+
+    </aside>
+
+
+    <main id="content">
+
+        <h1>Dashboard</h1>
+
+        <div class="cards">
+
+            <div class="card">
+                <h2>Hotels</h2>
+                <p id="hotelCount">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Packages</h2>
+                <p id="packageCount">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Reviews</h2>
+                <p id="reviewCount">0</p>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
 <script type="module" src="js/admin.js"></script>
 
 </body>

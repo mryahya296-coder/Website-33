@@ -26,7 +26,7 @@ loginBtn.addEventListener("click", async () => {
         );
 
        document.querySelector(".login-box").style.display = "none";
-       
+
 document.getElementById("dashboard").style.display = "block";
 
         // Dashboard comes next
@@ -38,5 +38,21 @@ document.getElementById("dashboard").style.display = "block";
         error.textContent = err.message;
 
     }
+
+});
+
+const content = document.getElementById("content");
+
+document.getElementById("manageHotels").addEventListener("click", () => {
+
+    content.innerHTML = `
+    
+        <h1>Hotels</h1>
+
+        <button id="addHotel">Add Hotel</button>
+
+        <div id="hotelList"></div>
+
+    `;
 
 });
