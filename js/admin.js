@@ -180,8 +180,10 @@ document.getElementById("logoutBtn").onclick = async () => {
 
     await signOut(auth);
 
-    document.getElementById("dashboard").style.display="none";
+   document.getElementById("dashboard").style.display = "none";
+document.getElementById("loginPage").style.display = "flex";
 
-    document.getElementById("loginPage").style.display="flex";
-
+email.value = "";
+password.value = "";
+error.textContent = "";
 };
