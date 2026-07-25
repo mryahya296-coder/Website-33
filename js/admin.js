@@ -41,18 +41,135 @@ document.getElementById("dashboard").style.display = "block";
 
 });
 
+// ===== DASHBOARD MENU =====
+
 const content = document.getElementById("content");
 
-document.getElementById("manageHotels").addEventListener("click", () => {
+function showDashboard() {
 
     content.innerHTML = `
-    
-        <h1>Hotels</h1>
 
-        <button id="addHotel">Add Hotel</button>
+        <h1>Dashboard</h1>
 
-        <div id="hotelList"></div>
+        <div class="cards">
+
+            <div class="card">
+                <h2>Hotels</h2>
+                <p id="hotelCount">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Packages</h2>
+                <p id="packageCount">0</p>
+            </div>
+
+            <div class="card">
+                <h2>Reviews</h2>
+                <p id="reviewCount">0</p>
+            </div>
+
+        </div>
+
+    `;
+}
+
+function showHotels(){
+
+    content.innerHTML = `
+
+        <h1>Hotel Management</h1>
+
+        <button id="addHotelBtn">+ Add Hotel</button>
+
+        <br><br>
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Name</th>
+
+                    <th>Location</th>
+
+                    <th>Price</th>
+
+                    <th>Rating</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="hotelTable">
+
+            </tbody>
+
+        </table>
+
+    `;
+}
+
+function showPackages(){
+
+    content.innerHTML=`
+
+        <h1>Package Management</h1>
+
+        <button>+ Add Package</button>
 
     `;
 
-});
+}
+
+function showReviews(){
+
+    content.innerHTML=`
+
+        <h1>Reviews</h1>
+
+        <button>+ Add Review</button>
+
+    `;
+
+}
+
+function showHero(){
+
+    content.innerHTML=`
+
+        <h1>Hero Banner</h1>
+
+        <button>Change Banner</button>
+
+    `;
+
+}
+
+function showSettings(){
+
+    content.innerHTML=`
+
+        <h1>Settings</h1>
+
+        <p>Website settings will appear here.</p>
+
+    `;
+
+}
+
+// Sidebar buttons
+
+document.getElementById("dashboardBtn").onclick=showDashboard;
+
+document.getElementById("manageHotels").onclick=showHotels;
+
+document.getElementById("managePackages").onclick=showPackages;
+
+document.getElementById("manageReviews").onclick=showReviews;
+
+document.getElementById("manageHero").onclick=showHero;
+
+document.getElementById("manageSettings").onclick=showSettings;
