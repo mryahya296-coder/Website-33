@@ -9,26 +9,26 @@ body{
     background:#f3f4f6;
 }
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 
 #loginPage{
-    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
+    height:100vh;
 }
 
 .login-box{
-    width:380px;
+    width:360px;
     background:#fff;
-    padding:40px;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
 }
 
 .login-box h1{
-    color:#ff7a00;
     text-align:center;
+    color:#ff7a00;
     margin-bottom:10px;
 }
 
@@ -42,210 +42,113 @@ body{
     padding:12px;
     margin-bottom:15px;
     border:1px solid #ccc;
-    border-radius:6px;
-    font-size:16px;
+    border-radius:8px;
 }
 
 .login-box button{
     width:100%;
     padding:12px;
-    border:none;
-    border-radius:6px;
     background:#ff7a00;
-    color:white;
+    color:#fff;
+    border:none;
+    border-radius:8px;
     cursor:pointer;
-    font-size:16px;
-}
-
-.login-box button:hover{
-    background:#ff9200;
 }
 
 #error{
     color:red;
-    margin-top:15px;
     text-align:center;
+    margin-top:10px;
 }
 
-/* ================= DASHBOARD ================= */
+/* DASHBOARD */
 
 #dashboard{
-    display:flex;
+    display:none;
     width:100%;
     min-height:100vh;
 }
 
-/* Sidebar */
-
 .sidebar{
     width:260px;
     background:#1e293b;
-    color:white;
-    display:flex;
-    flex-direction:column;
-    padding:20px;
+    color:#fff;
+    padding:25px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
 }
 
 .sidebar h2{
-    text-align:center;
-    margin-bottom:35px;
+    margin-bottom:30px;
 }
 
-.menu{
+.sidebar button{
     width:100%;
-    padding:14px;
     margin-bottom:10px;
+    padding:12px;
     border:none;
     border-radius:8px;
-    background:transparent;
-    color:white;
-    text-align:left;
     cursor:pointer;
-    font-size:16px;
-    transition:.3s;
-}
-
-.menu:hover{
     background:#334155;
+    color:#fff;
+    text-align:left;
 }
 
-.menu.active{
-    background:#ff7a00;
+.sidebar button:hover{
+    background:#475569;
 }
 
 .logout{
-    margin-top:auto;
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#dc2626;
-    color:white;
-    cursor:pointer;
-    font-size:16px;
+    margin-top:25px;
+    background:#dc2626 !important;
 }
 
-.logout:hover{
-    background:#b91c1c;
+#content{
+    margin-left:260px;
+    padding:30px;
+    width:calc(100% - 260px);
 }
-
-/* Content */
-
-main{
-    flex:1;
-    padding:35px;
-    overflow:auto;
-}
-
-main h1{
-    color:#111827;
-    margin-bottom:20px;
-}
-
-/* Cards */
 
 .cards{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
+    margin-top:25px;
 }
 
 .card{
-    background:white;
+    background:#fff;
     padding:25px;
     border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
 }
 
 .card h2{
-    color:#555;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
-.card p{
-    font-size:40px;
-    font-weight:bold;
-    color:#ff7a00;
-}
-
-/* Tables */
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
+.hotelForm{
+    background:#fff;
+    padding:20px;
+    margin-top:20px;
     border-radius:10px;
-    overflow:hidden;
 }
 
-th{
-    background:#ff7a00;
-    color:white;
-    padding:15px;
-}
-
-td{
-    padding:15px;
-    border-bottom:1px solid #ddd;
-}
-
-tr:hover{
-    background:#f8f8f8;
-}
-
-/* Buttons */
-
-button{
-    transition:.3s;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-/* Form */
-
-.form-group{
-    margin-bottom:18px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:6px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select{
+.hotelForm input,
+.hotelForm textarea{
     width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:6px;
+    padding:10px;
+    margin-bottom:12px;
 }
 
-.saveBtn{
+.hotelForm button{
+    width:auto;
     padding:12px 25px;
-    border:none;
-    border-radius:6px;
     background:#ff7a00;
-    color:white;
+    color:#fff;
+    border:none;
+    border-radius:8px;
     cursor:pointer;
-}
-
-/* Mobile */
-
-@media(max-width:900px){
-
-    #dashboard{
-        flex-direction:column;
-    }
-
-    .sidebar{
-        width:100%;
-    }
-
-    .cards{
-        grid-template-columns:1fr;
-    }
-
 }
