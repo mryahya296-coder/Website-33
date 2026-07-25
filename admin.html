@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Holidays Admin</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>ABC Holidays</h1>
+
+    <h2>Administrator Login</h2>
+
+    <input
+        id="email"
+        type="email"
+        placeholder="Email">
+
+    <input
+        id="password"
+        type="password"
+        placeholder="Password">
+
+    <button id="loginBtn">
+        Login
+    </button>
+
+    <p id="error"></p>
+
+</div>
+
+<div id="dashboard" style="display:none;">
+
+    <h1>ABC Holidays Admin Panel</h1>
+
+    <hr>
+
+    <button id="manageHotels">
+        🏨 Manage Hotels
+    </button>
+
+    <button id="managePackages">
+        📦 Manage Packages
+    </button>
+
+    <button id="manageReviews">
+        ⭐ Manage Reviews
+    </button>
+
+    <button id="manageHero">
+        🖼 Hero Banner
+    </button>
+
+    <button id="logoutBtn">
+        Logout
+    </button>
+
+</div>
+
+<script type="module" src="js/admin.js"></script>
+
+</body>
+
+</html>
